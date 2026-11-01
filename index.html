@@ -142,21 +142,17 @@
     </section>
 
     <section class="secret-section wrap section" id="secret">
-      <div class="secret-card">
-        <div class="secret-deco">♡</div>
+      <div class="secret-card" id="secret-card">
+        <div class="secret-deco">✧</div>
         <p class="eyebrow">06 / ПОСЛЕДНИЙ СЮРПРИЗ</p>
-        <h2>Три сердца —<br><em>один особенный билет.</em></h2>
-        <p>Найди три спрятанных сердца. В конце тебя будет ждать приглашение на наше следующее свидание — без спешки и без расстояний.</p>
+        <h2 id="secret-title">Я спрятал здесь<br><em>три маленьких знака.</em></h2>
+        <p id="secret-description">Найди три сердечка в разных уголках сайта. Неважно, с какого начнёшь — каждое новое будет засчитываться по порядку. ♥</p>
         <div class="heart-progress" aria-live="polite"><span id="heart-progress-fill"></span></div>
         <div class="progress-label"><span id="heart-progress-text">0 из 3 найдено</span><span>♡ ♡ ♡</span></div>
-        <div id="secret-unlocked" class="secret-unlocked ticket-reveal" hidden>
-          <div class="ticket-stamp">♥</div>
-          <span>ПРИГЛАШЕНИЕ № 001 · БЕЗ СРОКА ГОДНОСТИ</span>
-          <h3>Один вечер. Только мы.</h3>
-          <p>Этот билет даёт право на одно долгое свидание без спешки, на все объятия, которые мы пока не смогли подарить друг другу, и на время, в котором не будет места километрам.</p>
-          <div class="ticket-details"><div><small>МЕСТО</small><b>Рядом друг с другом</b></div><div><small>КОГДА</small><b>При первой возможности</b></div></div>
-          <button class="btn btn-primary ticket-claim" id="claim-ticket" type="button">Мне нравится этот план <span>♡</span></button>
-          <small class="ticket-footer">СОХРАНИ. ЭТОТ БИЛЕТ ЕЩЁ ПОНАДОБИТСЯ.</small>
+        <div class="secret-ready" id="secret-ready" hidden>
+          <span class="secret-ready-spark">✦</span>
+          <p>Все три сердца найдены. Но это была только первая глава…</p>
+          <button class="btn btn-primary secret-start" id="start-secret" type="button">Начать секретное путешествие <span>✦</span></button>
         </div>
       </div>
     </section>
@@ -181,6 +177,38 @@
   </audio>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
+
+  <section class="cosmos-overlay" id="cosmos-overlay" role="dialog" aria-modal="true" aria-labelledby="cosmos-title" aria-hidden="true" hidden>
+    <div class="cosmos-nebula cosmos-nebula-one" aria-hidden="true"></div>
+    <div class="cosmos-nebula cosmos-nebula-two" aria-hidden="true"></div>
+    <div class="cosmos-nebula cosmos-nebula-three" aria-hidden="true"></div>
+    <div class="cosmos-starfield" id="cosmos-starfield" aria-hidden="true"></div>
+    <button class="cosmos-close" id="cosmos-close" type="button" aria-label="Закрыть секрет">×</button>
+    <div class="cosmos-content">
+      <div class="cosmos-heading">
+        <p class="cosmos-kicker"><span>✦</span> ТОЛЬКО ДЛЯ ТЕБЯ · ГЛАВА II <span>✦</span></p>
+        <h2 id="cosmos-title">Там, где живут<br><em>наши звёзды.</em></h2>
+        <p>Я оставил для тебя семь маленьких звёзд. Найди их все — и посмотри, какое созвездие они сложат.</p>
+      </div>
+      <div class="cosmos-progress-wrap">
+        <div class="cosmos-progress-meta"><span id="star-progress-text">0 / 7 звёзд</span><span>СОБЕРИ СОЗВЕЗДИЕ</span></div>
+        <div class="cosmos-progress"><span id="star-progress-fill"></span></div>
+      </div>
+      <p class="cosmos-whisper" id="cosmos-whisper" aria-live="polite">Некоторые звёзды любят прятаться на виду ✧</p>
+      <div class="cosmos-board" id="cosmos-board" aria-label="Игровое поле со спрятанными звёздами">
+        <svg class="cosmos-constellation" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M160 250 L720 170 L470 400 L830 530 L240 690 L590 790 L910 340" /></svg>
+      </div>
+      <div class="cosmos-complete" id="cosmos-complete" hidden>
+        <span class="cosmos-complete-stamp">✧ СОЗВЕЗДИЕ СОБРАНО ✧</span>
+        <h3>Ты нашла наше<br><em>маленькое небо.</em></h3>
+        <p>Пусть между нами иногда целые страны, но мне нравится думать, что мы всё равно смотрим на одни и те же звёзды. А однажды будем смотреть на них рядом.</p>
+        <div class="cosmos-ticket-details"><span>МЕСТО <b>Рядом друг с другом</b></span><span>КОГДА <b>При первой возможности</b></span></div>
+        <button class="btn btn-primary ticket-claim" id="claim-ticket" type="button">Сохранить наше приглашение <span>♡</span></button>
+        <small>ОДИН ВЕЧЕР · ТОЛЬКО МЫ · БЕЗ СПЕШКИ</small>
+      </div>
+      <div class="cosmos-bottom-note">СДЕЛАНО ИЗ НЕЖНОСТИ, ПАРЫ ПИКСЕЛЕЙ И ЦЕЛОЙ ВСЕЛЕННОЙ ♡</div>
+    </div>
+  </section>
 
   <section class="hug-overlay" id="hug-overlay" role="dialog" aria-modal="true" aria-labelledby="hug-title" aria-hidden="true" hidden>
     <div class="hug-backdrop-glow hug-glow-one" aria-hidden="true"></div>

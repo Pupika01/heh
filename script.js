@@ -318,38 +318,157 @@ if (copyInvite) copyInvite.addEventListener('click', async () => {
   }
 });
 
-// Three hidden hearts around the page.
+// Three hidden hearts around the page. The number is based on collection order,
+// never on the heart's fixed position in the document.
 const heartLocations = [
-  { selector: '.hero-visual', label: 'Первое сердце найдено!' },
-  { selector: '.reasons-section .jar-area', label: 'Второе сердце! Осталось одно.' },
-  { selector: '.footer', label: 'Все три сердца найдены! Твой билет уже здесь. ♥' }
+  { selector: '.hero-visual' },
+  { selector: '.reasons-section .jar-area' },
+  { selector: '.footer' }
 ];
 let foundHearts = 0;
-heartLocations.forEach((item, index) => {
+const heartMilestones = [
+  'Первое сердце найдено! Так держать. ♥',
+  'Второе сердце найдено! Осталось совсем чуть-чуть. ♥',
+  'Третье сердце найдено! Все подсказки собраны. ✨'
+];
+heartLocations.forEach((item) => {
   const host = $(item.selector);
   if (!host) return;
   const button = document.createElement('button');
   button.className = 'hidden-heart';
   button.type = 'button';
   button.textContent = '♥';
-  button.setAttribute('aria-label', `Найти спрятанное сердце ${index + 1}`);
+  button.setAttribute('aria-label', 'Найти спрятанное сердце');
   button.addEventListener('click', () => {
     if (button.classList.contains('found')) return;
     button.classList.add('found');
     button.textContent = '♡';
     foundHearts += 1;
-    $('#heart-progress-fill').style.width = `${(foundHearts / 3) * 100}%`;
-    $('#heart-progress-text').textContent = `${foundHearts} из 3 найдено`;
-    toast(item.label);
+    const progressFill = $('#heart-progress-fill');
+    const progressText = $('#heart-progress-text');
+    if (progressFill) progressFill.style.width = `${(foundHearts / 3) * 100}%`;
+    if (progressText) progressText.textContent = foundHearts === 3 ? '3 из 3 — всё найдено!' : `${foundHearts} из 3 найдено`;
+    button.setAttribute('aria-label', `Сердце найдено. Это ${foundHearts}-е из трёх`);
+    toast(heartMilestones[foundHearts - 1]);
     burstHearts(13, window.innerWidth / 2, window.innerHeight * .55);
     if (foundHearts === 3) {
-      $('#secret-unlocked').hidden = false;
-      $('#secret-unlocked').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      burstHearts(24, window.innerWidth / 2, window.innerHeight * .55);
+      const secretCard = $('#secret-card');
+      const secretTitle = $('#secret-title');
+      const secretDescription = $('#secret-description');
+      const secretReady = $('#secret-ready');
+      secretTitle.innerHTML = 'Все подсказки<br><em>привели тебя сюда.</em>';
+      secretDescription.textContent = 'Три сердца найдены. Но самое красивое я спрятал чуть дальше — там, где начинается наше маленькое небо.';
+      secretReady.hidden = false;
+      secretCard?.classList.add('is-ready');
+      $('#secret')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      burstHearts(28, window.innerWidth / 2, window.innerHeight * .55);
     }
   });
   host.appendChild(button);
 });
+
+// The final secret: a small constellation hidden inside a full-screen night sky.
+(() => {
+  const overlay = $('#cosmos-overlay');
+  const board = $('#cosmos-board');
+  const closeButton = $('#cosmos-close');
+  const startButton = $('#start-secret');
+  const progressFill = $('#star-progress-fill');
+  const progressText = $('#star-progress-text');
+  const whisper = $('#cosmos-whisper');
+  const completeCard = $('#cosmos-complete');
+  if (!overlay || !board || !startButton) return;
+
+  const starPositions = [
+    [16, 25], [72, 17], [47, 40], [83, 53], [24, 69], [59, 79], [91, 34]
+  ];
+  const starMessages = [
+    'Первая звезда зажглась. Красиво, правда? ✨',
+    'Вторая — будто стала ближе. ♥',
+    'Третья звезда уже находит своё место.',
+    'Половина неба уже светится для тебя. ✦',
+    'Ещё две — и мы увидим целое созвездие.',
+    'Осталась последняя звезда. Не торопись, она рядом.',
+    'Все семь звёзд на месте. Посмотри, что получилось…'
+  ];
+  let foundStars = 0;
+  let previousFocus = null;
+  let isClosing = false;
+
+  // Fine distant stars make the whole sky feel alive without obscuring the targets.
+  const starfield = $('#cosmos-starfield');
+  if (starfield) {
+    for (let index = 0; index < 96; index += 1) {
+      const speck = document.createElement('i');
+      speck.className = 'cosmos-speck';
+      speck.style.left = `${(index * 37.17) % 100}%`;
+      speck.style.top = `${(index * 61.73 + 9) % 100}%`;
+      speck.style.setProperty('--speck-size', `${index % 11 === 0 ? 2.5 : index % 4 === 0 ? 1.8 : 1.15}px`);
+      speck.style.setProperty('--speck-delay', `${-(index % 23) * .19}s`);
+      starfield.appendChild(speck);
+    }
+  }
+
+  starPositions.forEach(([x, y], index) => {
+    const star = document.createElement('button');
+    star.type = 'button';
+    star.className = 'cosmic-star';
+    star.style.left = `${x}%`;
+    star.style.top = `${y}%`;
+    star.style.setProperty('--star-delay', `${-(index * .63)}s`);
+    star.setAttribute('aria-label', `Найти звезду ${index + 1}`);
+    star.innerHTML = '<span class="cosmic-star-glyph" aria-hidden="true">✦</span><span class="cosmic-star-core" aria-hidden="true"></span>';
+    star.addEventListener('click', () => {
+      if (star.classList.contains('found')) return;
+      star.classList.add('found');
+      star.disabled = true;
+      foundStars += 1;
+      progressFill.style.width = `${(foundStars / starPositions.length) * 100}%`;
+      progressText.textContent = `${foundStars} / ${starPositions.length} звёзд`;
+      whisper.textContent = starMessages[foundStars - 1];
+      star.setAttribute('aria-label', `Звезда найдена. ${foundStars} из ${starPositions.length}`);
+      if (foundStars === starPositions.length) {
+        overlay.classList.add('constellation-found');
+        whisper.textContent = 'Смотри… они сложились в наше созвездие. ♥';
+        window.setTimeout(() => {
+          completeCard.hidden = false;
+          overlay.classList.add('cosmos-completed');
+        }, 850);
+      }
+    });
+    board.appendChild(star);
+  });
+
+  function openCosmos() {
+    if (overlay.hidden) {
+      previousFocus = document.activeElement;
+      overlay.hidden = false;
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('cosmos-open');
+      requestAnimationFrame(() => overlay.classList.add('is-open'));
+      window.setTimeout(() => closeButton?.focus(), 120);
+    }
+  }
+
+  function closeCosmos() {
+    if (overlay.hidden || isClosing) return;
+    isClosing = true;
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('cosmos-open');
+    window.setTimeout(() => {
+      overlay.hidden = true;
+      isClosing = false;
+      if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+    }, 480);
+  }
+
+  startButton.addEventListener('click', openCosmos);
+  closeButton?.addEventListener('click', closeCosmos);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !overlay.hidden) closeCosmos();
+  });
+})();
 
 // Six-pair memory game. Every match reveals a tiny note.
 (() => {
