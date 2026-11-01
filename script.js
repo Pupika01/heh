@@ -1,123 +1,147 @@
-const notes = {
-  sad: {
-    label: 'ЗАПИСКА НА СЛОЖНЫЙ ДЕНЬ',
-    title: 'Можно просто выдохнуть.',
-    message: 'Тебе не обязательно всегда быть сильной, весёлой и собранной. Бывают дни, которые просто нужно пережить. Не требуй от себя слишком многого сегодня. Ты заслуживаешь тепла и заботы — даже, и особенно, когда день не задался.'
-  },
-  doubt: {
-    label: 'ЗАПИСКА НА МОМЕНТ СОМНЕНИЙ',
-    title: 'Не забывай, какая ты.',
-    message: 'Один неудачный день, ошибка или чьё-то мнение не определяют тебя. В тебе столько интересного, доброго и настоящего. Пожалуйста, смотри на себя чуть бережнее. Я вижу в тебе намного больше, чем ты иногда замечаешь сама.'
-  },
-  smile: {
-    label: 'ЗАПИСКА ДЛЯ УЛЫБКИ',
-    title: 'У меня есть одна мысль.',
-    message: 'Среди миллиардов людей мне повезло встретить именно тебя. И это одна из тех случайностей, за которые я особенно благодарен. Так что вот тебе маленькая причина улыбнуться. А большую я постараюсь придумать при встрече.'
-  }
-};
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-const dialog = document.querySelector('#note-dialog');
-const dialogLabel = document.querySelector('#dialog-label');
-const dialogTitle = document.querySelector('#dialog-title');
-const dialogMessage = document.querySelector('#dialog-message');
-const closeDialog = document.querySelector('.dialog-close');
+// Mobile navigation
+const menuButton = $('#menu-btn');
+const nav = $('#nav');
+menuButton.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  menuButton.setAttribute('aria-expanded', String(open));
+  menuButton.textContent = open ? '×' : '☰';
+});
+$$('#nav a').forEach(link => link.addEventListener('click', () => {
+  nav.classList.remove('open');
+  menuButton.setAttribute('aria-expanded', 'false');
+  menuButton.textContent = '☰';
+}));
 
-function openNote(key) {
-  const note = notes[key];
-  if (!note) return;
-  dialogLabel.textContent = note.label;
-  dialogTitle.textContent = note.title;
-  dialogMessage.textContent = note.message;
-  if (typeof dialog.showModal === 'function') {
-    dialog.showModal();
-  } else {
-    dialog.setAttribute('open', '');
-  }
+// Small status toast
+let toastTimer;
+function toast(message) {
+  const el = $('#toast');
+  el.textContent = message;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2300);
 }
 
-document.querySelectorAll('[data-note]').forEach((button) => {
-  button.addEventListener('click', () => openNote(button.dataset.note));
-});
-
-closeDialog.addEventListener('click', () => {
-  if (typeof dialog.close === 'function') dialog.close();
-  else dialog.removeAttribute('open');
-});
-
-dialog.addEventListener('click', (event) => {
-  if (event.target === dialog && typeof dialog.close === 'function') dialog.close();
-});
-
-const menuToggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.nav');
-menuToggle.addEventListener('click', () => {
-  const isOpen = nav.classList.toggle('is-open');
-  menuToggle.setAttribute('aria-expanded', String(isOpen));
-  menuToggle.setAttribute('aria-label', isOpen ? 'Закрыть меню' : 'Открыть меню');
-});
-
-nav.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    nav.classList.remove('is-open');
-    menuToggle.setAttribute('aria-expanded', 'false');
-    menuToggle.setAttribute('aria-label', 'Открыть меню');
-  });
-});
-
-const surpriseButton = document.querySelector('#surprise-button');
-const endingFootnote = document.querySelector('#ending-footnote');
-let surpriseOpened = false;
-
-function makePetal() {
-  const petal = document.createElement('span');
-  petal.className = 'floating-petal';
-  petal.textContent = Math.random() > 0.5 ? '✦' : '♡';
-  petal.style.left = `${8 + Math.random() * 84}%`;
-  petal.style.setProperty('--drift', `${Math.round(Math.random() * 150 - 75)}px`);
-  petal.style.setProperty('--duration', `${2.2 + Math.random() * 1.8}s`);
-  document.querySelector('.ending-section').appendChild(petal);
-  window.setTimeout(() => petal.remove(), 4300);
-}
-
-surpriseButton.addEventListener('click', () => {
-  if (!surpriseOpened) {
-    endingFootnote.textContent = 'Самый главный сюрприз — это ты. Спасибо, что ты есть в моей жизни. ♡';
-    surpriseButton.innerHTML = 'Прочитать ещё раз <span>↻</span>';
-    surpriseOpened = true;
-  } else {
-    endingFootnote.textContent = 'И да — я всё ещё очень хочу делать тебя счастливее.';
-  }
-  for (let i = 0; i < 18; i += 1) window.setTimeout(makePetal, i * 65);
-});
-
-// A tiny interactive heart button: every tap sends a little burst of hearts.
-const heartButton = document.querySelector('#heart-button');
-const heartCount = document.querySelector('#heart-count');
-let heartsSent = 0;
-
-function sendFloatingHeart(x, y, delay = 0) {
-  window.setTimeout(() => {
+// Heart confetti
+function burstHearts(count = 12, originX = window.innerWidth / 2, originY = window.innerHeight * .78) {
+  const layer = $('#floating-hearts');
+  for (let i = 0; i < count; i += 1) {
     const heart = document.createElement('span');
-    heart.className = 'floating-heart';
-    heart.textContent = Math.random() > 0.23 ? '♥' : '♡';
-    heart.style.setProperty('--start-x', `${x + Math.round(Math.random() * 36 - 18)}px`);
-    heart.style.setProperty('--start-y', `${y + Math.round(Math.random() * 16 - 8)}px`);
-    heart.style.setProperty('--heart-size', `${15 + Math.round(Math.random() * 17)}px`);
-    heart.style.setProperty('--heart-drift', `${Math.round(Math.random() * 100 - 50)}px`);
-    heart.style.setProperty('--heart-duration', `${2 + Math.random() * 1.2}s`);
-    document.body.appendChild(heart);
-    window.setTimeout(() => heart.remove(), 3500);
-  }, delay);
+    heart.className = 'float-heart';
+    heart.textContent = Math.random() > .25 ? '♥' : '♡';
+    heart.style.left = `${Math.max(2, Math.min(96, (originX / window.innerWidth) * 100 + (Math.random() * 24 - 12)))}%`;
+    heart.style.bottom = `${Math.max(0, window.innerHeight - originY + Math.random() * 25)}px`;
+    heart.style.setProperty('--size', `${15 + Math.random() * 20}px`);
+    heart.style.setProperty('--dur', `${2.2 + Math.random() * 1.4}s`);
+    layer.appendChild(heart);
+    setTimeout(() => heart.remove(), 3900);
+  }
 }
+$('#send-heart').addEventListener('click', (event) => {
+  const rect = event.currentTarget.getBoundingClientRect();
+  burstHearts(18, rect.left + rect.width / 2, rect.top + rect.height / 2);
+  const status = $('#heart-status');
+  const sent = Number(status.dataset.sent || 0) + 1;
+  status.dataset.sent = String(sent);
+  status.textContent = sent === 1 ? 'Первое сердечко уже летит к тебе. ♥' : `Уже ${sent} сердечек — и это ещё не предел. ♥`;
+});
 
-if (heartButton && heartCount) {
-  heartButton.addEventListener('click', () => {
-    heartsSent += 1;
-    heartCount.textContent = String(heartsSent);
-    const rect = heartButton.getBoundingClientRect();
-    for (let i = 0; i < 9; i += 1) {
-      sendFloatingHeart(rect.left + rect.width * 0.48, rect.top + rect.height * 0.5, i * 55);
-    }
-    heartButton.setAttribute('aria-label', `Отправлено сердечек: ${heartsSent}`);
-  });
+// Mood selector with tailored short notes
+const moodMessages = {
+  tired: 'Тогда сегодня никаких подвигов. Выдохни, устройся поудобнее и помни: тебе не нужно заслуживать заботу. Ты достойна её просто так. ♡',
+  miss: 'Лови виртуальное объятие. Расстояние не отменяет того, что я думаю о тебе и хочу поскорее услышать, как прошёл твой день. ♥',
+  happy: 'Вот это настроение надо беречь! Пусть хорошего сегодня станет ещё больше, а я постараюсь добавить к нему хотя бы одну улыбку. ☀️',
+  chaos: 'Тогда официально разрешаю этому дню быть каким угодно. А моя задача — придумать что-нибудь приятное и немного неожиданное. ✨'
+};
+$$('[data-mood]').forEach(button => button.addEventListener('click', () => {
+  $$('[data-mood]').forEach(item => item.classList.remove('selected'));
+  button.classList.add('selected');
+  $('#mood-message').textContent = moodMessages[button.dataset.mood];
+  $('#mood-result').hidden = false;
+  $('#mood-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}));
+
+// Jar of reasons. Prevent repeats until all messages are shown.
+const reasons = [
+  'Потому что у тебя особенная улыбка — та самая, которую хочется запоминать.',
+  'Потому что с тобой даже обычный разговор может стать любимым моментом.',
+  'Потому что у тебя свой взгляд на мир, и мне интересно его узнавать.',
+  'Потому что ты умеешь быть собой. И в этом много красоты.',
+  'Потому что твой смех способен сделать день светлее.',
+  'Потому что мне хочется узнавать о твоих мечтах и поддерживать их.',
+  'Потому что ты не обязана быть идеальной, чтобы быть невероятной.',
+  'Потому что в тебе есть детали, которые замечаю и ценю именно я.',
+  'Потому что рядом с тобой хочется придумывать новые воспоминания.',
+  'Потому что ты можешь удивлять, даже не стараясь.',
+  'Потому что мне нравится слушать даже самые маленькие истории из твоего дня.',
+  'Потому что ты — это ты. И этого уже достаточно.'
+];
+let reasonDeck = [];
+function refillReasons() {
+  reasonDeck = [...reasons].sort(() => Math.random() - .5);
 }
+refillReasons();
+let lastReason = '';
+$('#draw-reason').addEventListener('click', () => {
+  if (!reasonDeck.length) refillReasons();
+  let next = reasonDeck.pop();
+  if (next === lastReason && reasonDeck.length) next = reasonDeck.pop();
+  lastReason = next;
+  const slip = $('#reason-slip');
+  slip.classList.remove('pop');
+  void slip.offsetWidth;
+  slip.innerHTML = `<span>ЗАПИСКА ДЛЯ ТЕБЯ</span><b>${next}</b><small>♡ ещё одну?</small>`;
+  slip.classList.add('pop');
+  burstHearts(5, window.innerWidth * .52, window.innerHeight * .55);
+});
+
+// Build a low-pressure date invitation from choices.
+const dateChoices = { activity: 'Устроим домашний кинотеатр 🎬', snack: 'что-нибудь вкусное 🍓', vibe: 'уютно и спокойно 🕯️' };
+$$('.choice-row').forEach(row => {
+  $$('.choice', row).forEach(button => button.addEventListener('click', () => {
+    $$('.choice', row).forEach(item => item.classList.remove('active'));
+    button.classList.add('active');
+    dateChoices[row.dataset.choice] = button.dataset.value;
+  }));
+});
+$('#build-date').addEventListener('click', () => {
+  $('#date-plan').textContent = `${dateChoices.activity}, возьмём ${dateChoices.snack}, а атмосферу сделаем ${dateChoices.vibe}. Осталось только выбрать день — и получится наше маленькое приключение. ♡`;
+  $('#date-result').hidden = false;
+  $('#date-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  burstHearts(8, window.innerWidth * .5, window.innerHeight * .72);
+});
+
+// Three hidden hearts. One in hero, one in the jar area, one in footer.
+const heartLocations = [
+  { selector: '.hero-visual', label: 'Первое сердце найдено!' },
+  { selector: '.reasons-section .jar-area', label: 'Второе сердце! Осталось одно.' },
+  { selector: '.footer', label: 'Все три сердца найдены! Секрет открыт. ♥' }
+];
+let foundHearts = 0;
+heartLocations.forEach((item, index) => {
+  const host = $(item.selector);
+  if (!host) return;
+  const button = document.createElement('button');
+  button.className = 'hidden-heart';
+  button.type = 'button';
+  button.textContent = '♥';
+  button.setAttribute('aria-label', `Найти спрятанное сердце ${index + 1}`);
+  button.addEventListener('click', () => {
+    if (button.classList.contains('found')) return;
+    button.classList.add('found');
+    button.textContent = '♡';
+    foundHearts += 1;
+    $('#heart-progress-fill').style.width = `${(foundHearts / 3) * 100}%`;
+    $('#heart-progress-text').textContent = `${foundHearts} из 3 найдено`;
+    toast(item.label);
+    burstHearts(12, window.innerWidth / 2, window.innerHeight * .55);
+    if (foundHearts === 3) {
+      $('#secret-unlocked').hidden = false;
+      $('#secret-unlocked').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+  host.appendChild(button);
+});
