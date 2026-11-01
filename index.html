@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f0e8">
+  <meta name="description" content="Небольшая страница, сделанная с теплом и любовью.">
+  <title>Немного тепла — для тебя</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="На главную"><span class="wordmark-mark">✳</span> ТИХО И ВАЖНО</a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="#about">О главном</a>
+      <a href="#notes">На любой день</a>
+      <a href="#last">В конце</a>
+    </nav>
+    <a class="header-note" href="#letter">одно письмо <span>↗</span></a>
+    <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> НЕ НУЖЕН ОСОБЫЙ ПОВОД</p>
+        <h1>Есть люди,<br>рядом с которыми<br><em>мир добрее.</em></h1>
+        <p class="hero-text">Я сделал эту маленькую страницу, чтобы напомнить тебе кое-что важное. Не между делом, не на бегу — а по-настоящему.</p>
+        <div class="hero-actions">
+          <a class="button button-dark" href="#letter">Прочитать письмо <span>↗</span></a>
+          <span class="micro-note">несколько слов от сердца</span>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-label="Декоративная иллюстрация: солнце над холмами" role="img">
+        <div class="art-topline"><span>№ 001</span><span>СОЗДАНО С ТЕПЛОМ</span></div>
+        <div class="sun"></div>
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="hill hill-back"></div>
+        <div class="hill hill-front"></div>
+        <div class="art-flower flower-one">✳</div>
+        <div class="art-flower flower-two">✳</div>
+        <div class="art-caption"><span>для самого</span><strong>дорогого человека</strong></div>
+        <div class="art-bottomline"><span>СОХРАНИ ЭТО ЧУВСТВО</span><span>♡</span></div>
+      </div>
+      <div class="hero-index" aria-hidden="true">01 / 04</div>
+      <a class="scroll-cue" href="#about"><span class="scroll-line"></span> ЛИСТАЙ НЕ СПЕША</a>
+    </section>
+
+    <section class="intro-section section-shell" id="about">
+      <div class="section-kicker"><span>01</span><span class="kicker-rule"></span><span>САМОЕ ГЛАВНОЕ</span></div>
+      <div class="intro-grid">
+        <h2>Мне нравится<br>не только то,<br><em>какая ты.</em></h2>
+        <div class="intro-body">
+          <p class="intro-lead">Мне нравится то, каким становится мир, когда ты в нём есть.</p>
+          <p>Обычные вещи вдруг становятся чуть интереснее. В случайных моментах появляется что-то особенное. И даже самый простой день может стать тем самым днём, который хочется запомнить.</p>
+          <p>Я не всегда умею красиво всё объяснить, поэтому пусть часть моих слов останется здесь.</p>
+          <div class="signature"><span class="signature-line"></span><span>от меня — тебе</span></div>
+        </div>
+      </div>
+      <div class="qualities">
+        <article class="quality-card">
+          <span class="quality-number">01</span>
+          <span class="quality-symbol">☼</span>
+          <h3>Твоя улыбка</h3>
+          <p>У неё есть талант делать хороший момент ещё лучше.</p>
+        </article>
+        <article class="quality-card quality-card-accent">
+          <span class="quality-number">02</span>
+          <span class="quality-symbol">⌁</span>
+          <h3>Твоя искренность</h3>
+          <p>Мне ценно, что рядом с тобой хочется быть собой.</p>
+        </article>
+        <article class="quality-card">
+          <span class="quality-number">03</span>
+          <span class="quality-symbol">✳</span>
+          <h3>Твой целый мир</h3>
+          <p>Мне интересно узнавать его — бережно, день за днём.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="letter-section" id="letter">
+      <div class="letter-inner section-shell">
+        <div class="section-kicker section-kicker-light"><span>02</span><span class="kicker-rule"></span><span>НЕБОЛЬШОЕ ПИСЬМО</span></div>
+        <div class="letter-layout">
+          <div class="letter-heading">
+            <p class="eyebrow eyebrow-light">ЕСЛИ СЕГОДНЯ ТЕБЕ ЭТО НУЖНО</p>
+            <h2>Просто<br><em>прочитай.</em></h2>
+            <p>Некоторые вещи лучше не откладывать на потом.</p>
+          </div>
+          <article class="letter-card">
+            <div class="letter-card-top"><span>ЛИЧНОЕ</span><span>♡</span></div>
+            <div class="letter-card-body">
+              <p class="letter-greeting">Привет, хорошая.</p>
+              <p>Я хочу, чтобы ты чаще замечала, сколько в тебе прекрасного. Не только в те дни, когда всё получается, настроение отличное и ты довольна собой. А вообще. Каждый день.</p>
+              <p>Мне хочется быть человеком, с которым тебе спокойно, смешно и легко. Который умеет слушать, замечать мелочи, поддерживать и радовать тебя без повода.</p>
+              <p>Я не обещаю идеальности. Но обещаю стараться — не только говорить красивые слова, но и подтверждать их поступками.</p>
+              <p class="letter-signoff">Ты очень много для меня значишь.<br><span>И это не просто красивые слова.</span></p>
+            </div>
+            <div class="letter-card-bottom"><span>С ТЕПЛОМ</span><span class="hand-heart">♡</span></div>
+          </article>
+        </div>
+      </div>
+      <div class="letter-decoration" aria-hidden="true">♡</div>
+    </section>
+
+    <section class="notes-section section-shell" id="notes">
+      <div class="section-kicker"><span>03</span><span class="kicker-rule"></span><span>ОТКРОЙ, КОГДА ЗАХОЧЕТСЯ</span></div>
+      <div class="notes-heading">
+        <h2>Маленькие слова<br><em>на разные случаи.</em></h2>
+        <p>Здесь можно открыть одну из трёх записок. Каждая — с теплом.</p>
+      </div>
+      <div class="note-grid">
+        <button class="note-card note-peach" type="button" data-note="sad">
+          <span class="note-top"><span>ЗАПИСКА № 01</span><span>↗</span></span>
+          <span class="note-illustration note-cloud" aria-hidden="true">☁</span>
+          <span class="note-title">Когда день<br>не задался</span>
+          <span class="note-bottom">ОТКРЫТЬ ЗАПИСКУ <span>↗</span></span>
+        </button>
+        <button class="note-card note-green" type="button" data-note="doubt">
+          <span class="note-top"><span>ЗАПИСКА № 02</span><span>↗</span></span>
+          <span class="note-illustration note-spark" aria-hidden="true">✳</span>
+          <span class="note-title">Когда забываешь,<br>какая ты классная</span>
+          <span class="note-bottom">ОТКРЫТЬ ЗАПИСКУ <span>↗</span></span>
+        </button>
+        <button class="note-card note-lilac" type="button" data-note="smile">
+          <span class="note-top"><span>ЗАПИСКА № 03</span><span>↗</span></span>
+          <span class="note-illustration note-flower" aria-hidden="true">✿</span>
+          <span class="note-title">Когда хочется<br>улыбнуться</span>
+          <span class="note-bottom">ОТКРЫТЬ ЗАПИСКУ <span>↗</span></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="ending-section" id="last">
+      <div class="ending-orb" aria-hidden="true"></div>
+      <div class="ending-content section-shell">
+        <div class="section-kicker section-kicker-light"><span>04</span><span class="kicker-rule"></span><span>И ПОСЛЕДНЕЕ</span></div>
+        <p class="eyebrow eyebrow-light">ЭТОТ САЙТ — ЛИШЬ МАЛЕНЬКОЕ НАПОМИНАНИЕ</p>
+        <h2>Самое красивое<br>я хочу показывать<br><em>не экраном.</em></h2>
+        <p class="ending-copy">А вниманием, заботой, временем и маленькими поступками. Сегодня, завтра и в самые обычные дни.</p>
+        <button class="button button-light" id="surprise-button" type="button">Нажми напоследок <span>♡</span></button>
+        <p class="ending-footnote" id="ending-footnote" aria-live="polite">Здесь спрятано кое-что хорошее.</p>
+      </div>
+      <div class="ending-stamp" aria-hidden="true"><span>СДЕЛАНО</span><strong>♡</strong><span>С ЛЮБОВЬЮ</span></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="wordmark" href="#top"><span class="wordmark-mark">✳</span> ТИХО И ВАЖНО</a>
+    <span>маленькая страница с большим чувством</span>
+    <a href="#top" class="to-top">НАВЕРХ ↑</a>
+  </footer>
+
+  <dialog class="note-dialog" id="note-dialog" aria-labelledby="dialog-title">
+    <button class="dialog-close" type="button" aria-label="Закрыть">×</button>
+    <span class="dialog-label" id="dialog-label">НЕБОЛЬШАЯ ЗАПИСКА</span>
+    <h2 id="dialog-title">Для тебя</h2>
+    <p id="dialog-message"></p>
+    <span class="dialog-heart">♡</span>
+  </dialog>
+
+  <script>
+    // Fallback for browsers that do not support dialog is handled in script.js.
+  </script>
+</body>
+</html>
