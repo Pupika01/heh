@@ -167,15 +167,15 @@ if (menuButton && nav) {
   }));
 }
 
-// The soundtrack uses Spotify's official embedded player. Audio only starts
-// after the visitor presses Play inside the provider player.
+// The soundtrack uses official Arctic Monkeys audio uploads embedded from YouTube.
+// Playback starts only after the visitor presses Play in the YouTube player.
 (() => {
   const card = $('#music-card');
   const openButton = $('#music-open');
   const toggleButton = $('#music-toggle');
   const playerWrap = $('#music-player-wrap');
-  const player = $('#spotify-player');
-  const fallback = $('#spotify-fallback');
+  const player = $('#youtube-player');
+  const fallback = $('#music-fallback');
   const vinyl = $('#vinyl-button');
   const easterEgg = $('#music-easter');
   if (!card || !toggleButton || !playerWrap || !player) return;
@@ -183,18 +183,18 @@ if (menuButton && nav) {
   const tracks = {
     iwy: {
       title: 'I Wanna Be Yours',
-      id: '7a8GawTVgHZvBLQOh46he7',
-      url: 'https://open.spotify.com/track/7a8GawTVgHZvBLQOh46he7'
+      id: 'nyuo9-OjNNg',
+      url: 'https://www.youtube.com/watch?v=nyuo9-OjNNg'
     },
     '505': {
       title: '505',
-      id: '0BxE4FqsDD1Ot4YuBXwAPp',
-      url: 'https://open.spotify.com/track/0BxE4FqsDD1Ot4YuBXwAPp'
+      id: 'KfEEm4Zx-EU',
+      url: 'https://www.youtube.com/watch?v=KfEEm4Zx-EU'
     },
     anthem: {
       title: 'No. 1 Party Anthem',
-      id: '5TTGoX70AFrTvuEtqHK37S',
-      url: 'https://open.spotify.com/track/5TTGoX70AFrTvuEtqHK37S'
+      id: 'mGUjVbsYG6E',
+      url: 'https://www.youtube.com/watch?v=mGUjVbsYG6E'
     }
   };
   let selected = 'iwy';
@@ -202,10 +202,10 @@ if (menuButton && nav) {
 
   function loadSelectedTrack() {
     const track = tracks[selected];
-    player.src = `https://open.spotify.com/embed/track/${track.id}?utm_source=generator&theme=0`;
-    player.title = `${track.title} — Arctic Monkeys · Spotify`;
+    player.src = `https://www.youtube-nocookie.com/embed/${track.id}?rel=0&playsinline=1`;
+    player.title = `${track.title} — Arctic Monkeys · официальный YouTube-плеер`;
     fallback.href = track.url;
-    fallback.textContent = `Открыть «${track.title}» в Spotify ↗`;
+    fallback.textContent = `Открыть «${track.title}» на YouTube ↗`;
   }
 
   function showPlayer(scroll = false) {
