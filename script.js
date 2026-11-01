@@ -277,7 +277,7 @@ if (copyInvite) copyInvite.addEventListener('click', async () => {
 const heartLocations = [
   { selector: '.hero-visual', label: 'Первое сердце найдено!' },
   { selector: '.reasons-section .jar-area', label: 'Второе сердце! Осталось одно.' },
-  { selector: '.footer', label: 'Все три сердца найдены! Секрет открыт. ♥' }
+  { selector: '.footer', label: 'Все три сердца найдены! Твой билет уже здесь. ♥' }
 ];
 let foundHearts = 0;
 heartLocations.forEach((item, index) => {
@@ -391,9 +391,66 @@ heartLocations.forEach((item, index) => {
   }
   cards.forEach(card => card.addEventListener('click', () => selectCard(card)));
   $('#reset-game').addEventListener('click', reset);
-  $('#win-heart').addEventListener('click', () => {
-    burstHearts(30, window.innerWidth / 2, window.innerHeight * .55);
-    toast('Объятие отправлено. Доставка — мгновенная. ♥');
+  const hugOverlay = $('#hug-overlay');
+  const hugParticles = $('#hug-particles');
+  const hugClose = $('#hug-close');
+  const hugReturn = $('#hug-return');
+  let previousFocus = null;
+
+  function createHugParticles() {
+    if (!hugParticles) return;
+    hugParticles.replaceChildren();
+    const symbols = ['♥', '♡', '✦', '✧', '❀'];
+    for (let i = 0; i < 64; i += 1) {
+      const particle = document.createElement('span');
+      particle.className = 'hug-particle';
+      particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      particle.style.setProperty('--x', `${Math.round((Math.random() - .5) * window.innerWidth * 1.35)}px`);
+      particle.style.setProperty('--y', `${Math.round((Math.random() - .5) * window.innerHeight * 1.15)}px`);
+      particle.style.setProperty('--spin', `${Math.round(Math.random() * 220 - 110)}deg`);
+      particle.style.setProperty('--size', `${13 + Math.random() * 27}px`);
+      particle.style.setProperty('--delay', `${Math.random() * .7}s`);
+      particle.style.setProperty('--duration', `${2.5 + Math.random() * 2}s`);
+      hugParticles.appendChild(particle);
+    }
+  }
+
+  function openHug() {
+    if (!hugOverlay) return;
+    previousFocus = document.activeElement;
+    createHugParticles();
+    hugOverlay.hidden = false;
+    hugOverlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('hug-open');
+    requestAnimationFrame(() => hugOverlay.classList.add('is-open'));
+    window.setTimeout(() => hugClose?.focus(), 120);
+    burstHearts(36, window.innerWidth / 2, window.innerHeight * .5);
+  }
+
+  function closeHug() {
+    if (!hugOverlay || hugOverlay.hidden) return;
+    hugOverlay.classList.remove('is-open');
+    hugOverlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('hug-open');
+    window.setTimeout(() => {
+      hugOverlay.hidden = true;
+      if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+    }, 520);
+  }
+
+  $('#win-heart').addEventListener('click', openHug);
+  hugClose?.addEventListener('click', closeHug);
+  hugReturn?.addEventListener('click', closeHug);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && hugOverlay && !hugOverlay.hidden) closeHug();
+  });
+
+  const claimTicket = $('#claim-ticket');
+  claimTicket?.addEventListener('click', () => {
+    burstHearts(28, window.innerWidth / 2, window.innerHeight * .55);
+    claimTicket.innerHTML = 'Билет сохранён. Жду нашей встречи ♡';
+    claimTicket.classList.add('ticket-saved');
+    toast('Билет принят. Осталось дождаться нашей встречи. ♥');
   });
   reset();
 })();

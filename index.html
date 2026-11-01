@@ -105,7 +105,7 @@
           <button class="memory-card" type="button" data-card="11" aria-label="Открыть карточку 12"><span class="card-back">♡</span><span class="card-front"></span></button>
         </div>
         <div class="game-bottom"><p id="game-message" aria-live="polite">Открывай по две карточки и ищи совпадения. Удачи! ♡</p><button class="btn btn-ghost game-reset" id="reset-game" type="button">Перемешать ↻</button></div>
-        <div class="game-win" id="game-win" hidden><span>ВСЕ СОВПАДЕНИЯ НАЙДЕНЫ · ♥</span><h3>У тебя получилось!</h3><p>Все шесть пар на месте. А вот и маленький приз: виртуальное объятие, которое не зависит от расстояний.</p><button class="btn btn-primary" id="win-heart" type="button">Забрать объятие <span>♡</span></button></div>
+        <div class="game-win" id="game-win" hidden><span>ВСЕ СОВПАДЕНИЯ НАЙДЕНЫ · ♥</span><h3>У тебя получилось!</h3><p>Шесть пар собраны — кажется, ты заслужила кое-что особенное. Готова получить самое большое виртуальное объятие?</p><button class="btn btn-primary" id="win-heart" type="button">Забрать объятия <span>♡</span></button></div>
       </div>
     </section>
 
@@ -137,19 +137,27 @@
     <section class="letter-section">
       <div class="wrap letter-layout">
         <div><p class="eyebrow light">05 / НЕБОЛЬШАЯ ПАУЗА</p><h2>И всё-таки<br><em>пару слов.</em></h2><p class="letter-intro">Интерактивы — это весело, но кое-что хочется сказать без кнопок и эффектов.</p></div>
-        <article class="letter-card"><span class="letter-top">ЛИЧНОЕ · ♡</span><p>Я не хочу, чтобы этот сайт был просто набором красивых фраз. Мне хочется, чтобы за ними стояли внимание, забота, смешные моменты и поступки.</p><p>Спасибо, что ты есть в моей жизни. Даже когда нас разделяют разные страны, мне интересно узнавать тебя дальше — твоё настроение, мысли, мечты и самые обычные истории за день.</p><p>Я не обещаю быть идеальным, но хочу стараться делать рядом со мной больше хорошего.</p><strong>Пока обнимаю мысленно. А при встрече — уже по-настоящему. ♡</strong><span class="letter-sign">твой человек</span></article>
+        <article class="letter-card"><span class="letter-top">ЛИЧНОЕ · ♡</span><p>Я не хочу, чтобы этот сайт был просто набором красивых фраз. Мне хочется, чтобы за ними стояли внимание, забота, смешные моменты и поступки.</p><p>Спасибо, что ты есть в моей жизни. Даже когда нас разделяют разные страны, мне интересно узнавать тебя дальше — твоё настроение, мысли, мечты и самые обычные истории за день.</p><p>Я не обещаю быть идеальным, но хочу стараться делать рядом со мной больше хорошего.</p><strong>Пока обнимаю мысленно. А при встрече — уже по-настоящему. ♡</strong><span class="letter-sign">Обнимаю через все километры ♡</span></article>
       </div>
     </section>
 
     <section class="secret-section wrap section" id="secret">
       <div class="secret-card">
         <div class="secret-deco">♡</div>
-        <p class="eyebrow">06 / СЕКРЕТНЫЙ УРОВЕНЬ</p>
-        <h2>На этой странице<br>спрятались <em>три сердца.</em></h2>
-        <p>Найди их — и откроется маленький секрет. Одно уже совсем рядом, остальные прячутся по странице.</p>
+        <p class="eyebrow">06 / ПОСЛЕДНИЙ СЮРПРИЗ</p>
+        <h2>Три сердца —<br><em>один особенный билет.</em></h2>
+        <p>Найди три спрятанных сердца. В конце тебя будет ждать приглашение на наше следующее свидание — без спешки и без расстояний.</p>
         <div class="heart-progress" aria-live="polite"><span id="heart-progress-fill"></span></div>
         <div class="progress-label"><span id="heart-progress-text">0 из 3 найдено</span><span>♡ ♡ ♡</span></div>
-        <div id="secret-unlocked" class="secret-unlocked" hidden><span>СЕКРЕТ ОТКРЫТ</span><h3>Самое красивое здесь — не дизайн.</h3><p>А человек, ради которого мне захотелось всё это придумать. ♡</p><span class="secret-confetti">✦ ✧ ♥ ✦</span></div>
+        <div id="secret-unlocked" class="secret-unlocked ticket-reveal" hidden>
+          <div class="ticket-stamp">♥</div>
+          <span>ПРИГЛАШЕНИЕ № 001 · БЕЗ СРОКА ГОДНОСТИ</span>
+          <h3>Один вечер. Только мы.</h3>
+          <p>Этот билет даёт право на одно долгое свидание без спешки, на все объятия, которые мы пока не смогли подарить друг другу, и на время, в котором не будет места километрам.</p>
+          <div class="ticket-details"><div><small>МЕСТО</small><b>Рядом друг с другом</b></div><div><small>КОГДА</small><b>При первой возможности</b></div></div>
+          <button class="btn btn-primary ticket-claim" id="claim-ticket" type="button">Мне нравится этот план <span>♡</span></button>
+          <small class="ticket-footer">СОХРАНИ. ЭТОТ БИЛЕТ ЕЩЁ ПОНАДОБИТСЯ.</small>
+        </div>
       </div>
     </section>
   </main>
@@ -158,6 +166,28 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
+
+  <section class="hug-overlay" id="hug-overlay" role="dialog" aria-modal="true" aria-labelledby="hug-title" aria-hidden="true" hidden>
+    <div class="hug-backdrop-glow hug-glow-one" aria-hidden="true"></div>
+    <div class="hug-backdrop-glow hug-glow-two" aria-hidden="true"></div>
+    <div class="hug-particles" id="hug-particles" aria-hidden="true"></div>
+    <button class="hug-close" id="hug-close" type="button" aria-label="Закрыть объятие">×</button>
+    <div class="hug-stage">
+      <div class="hug-emblem" aria-hidden="true">
+        <span class="hug-ring hug-ring-one"></span><span class="hug-ring hug-ring-two"></span>
+        <span class="hug-orbit-heart orbit-heart-one">♥</span><span class="hug-orbit-heart orbit-heart-two">♡</span>
+        <span class="hug-core">♥</span>
+        <span class="hug-glint glint-one">✦</span><span class="hug-glint glint-two">✧</span><span class="hug-glint glint-three">✦</span>
+      </div>
+      <div class="hug-copy">
+        <p class="hug-kicker">ДОСТАВКА · МГНОВЕННАЯ · БЕЗ ГРАНИЦ</p>
+        <h2 id="hug-title">Обнимаю<br><em>крепко-крепко.</em></h2>
+        <p>Пусть сейчас между нами экран, но это объятие — самое настоящее. Закрой глаза на секунду. Представь, что я рядом. ♡</p>
+        <button class="hug-return" id="hug-return" type="button">Вернуться к сюрпризу <span>↗</span></button>
+      </div>
+      <div class="hug-bottom-note">ОДНО ОБЪЯТИЕ · МИЛЛИОН ТЁПЛЫХ МЫСЛЕЙ <span>♥</span></div>
+    </div>
+  </section>
   <div class="floating-hearts" id="floating-hearts" aria-hidden="true"></div>
 </body>
 </html>
