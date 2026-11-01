@@ -42,7 +42,6 @@
   <header class="topbar">
     <a class="brand" href="#top" aria-label="На главную"><span>♥</span> little love project</a>
     <nav class="nav" id="nav">
-      <a href="#soundtrack">Музыка</a>
       <a href="#mood">Настроение</a>
       <a href="#game">Мини-игра</a>
       <a href="#reasons">Причины</a>
@@ -60,7 +59,6 @@
         <div class="hero-actions">
           <a class="btn btn-primary" href="#mood">Начать приключение <span>↗</span></a>
           <button class="btn btn-ghost" id="send-heart" type="button">Отправить сердечко <span>♡</span></button>
-          <button class="btn btn-music" id="music-open" type="button"><span class="music-note-icon">♫</span> Включить саундтрек</button>
         </div>
         <p class="tiny-note" id="heart-status" aria-live="polite">P.S. это сердечко уже у тебя ♡</p>
       </div>
@@ -73,39 +71,6 @@
         <span class="visual-caption">маленькая вещь · большие чувства</span>
       </div>
       <a class="scroll-hint" href="#mood"><span></span> ЛИСТАЙ НИЖЕ</a>
-    </section>
-
-    <section class="music-section wrap" id="soundtrack" aria-labelledby="music-title">
-      <div class="music-card" id="music-card">
-        <div class="music-art">
-          <span class="music-orbit music-orbit-one" aria-hidden="true">✦</span>
-          <span class="music-orbit music-orbit-two" aria-hidden="true">♫</span>
-          <button class="vinyl-disc" id="vinyl-button" type="button" aria-label="Открыть маленькую музыкальную записку" aria-pressed="false">
-            <span class="vinyl-grooves" aria-hidden="true"></span>
-            <span class="vinyl-label"><b>AM</b><small>SIDE A · ♡</small></span>
-          </button>
-          <span class="music-art-caption">PLAY IT WHEN YOU MISS ME</span>
-        </div>
-        <div class="music-copy">
-          <p class="music-eyebrow">МАЛЕНЬКАЯ МУЗЫКАЛЬНАЯ ПАУЗА <span>✦</span></p>
-          <h2 id="music-title">Одна песня,<br><em>чтобы быть ближе.</em></h2>
-          <p class="music-description">Ты любишь Arctic Monkeys — поэтому я оставил здесь три любимых трека. Выбери настроение, а Play нажми прямо в плеере SoundCloud.</p>
-          <div class="track-tabs" role="group" aria-label="Выбрать песню Arctic Monkeys">
-            <button class="track-tab active" type="button" data-track="iwy" aria-pressed="true">I Wanna Be Yours</button>
-            <button class="track-tab" type="button" data-track="505" aria-pressed="false">505</button>
-            <button class="track-tab" type="button" data-track="anthem" aria-pressed="false">No. 1 Party Anthem</button>
-          </div>
-          <div class="music-player-wrap" id="music-player-wrap" hidden>
-            <iframe id="soundcloud-player" title="Плеер SoundCloud — Arctic Monkeys" width="100%" height="166" style="border:0;border-radius:13px" loading="lazy" allow="autoplay" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-            <a class="music-fallback" id="music-fallback" href="https://soundcloud.com/arcticmonkeys/i-wanna-be-yours" target="_blank" rel="noopener noreferrer">Открыть трек на SoundCloud ↗</a>
-          </div>
-          <div class="music-actions">
-            <button class="btn btn-music-play" id="music-toggle" type="button" aria-expanded="false">Открыть плеер <span>♫</span></button>
-            <p class="music-hint" id="music-hint">Музыка не включается сама. Выбери песню и нажми Play в плеере SoundCloud — весь трек будет играть прямо здесь. ♡</p>
-          </div>
-          <p class="music-easter" id="music-easter" hidden>Маленькая идея: выбери песню и нажми Play одновременно со мной. У нас будет один саундтрек на две страны. ♡</p>
-        </div>
-      </div>
     </section>
 
     <section class="section wrap" id="mood">
@@ -199,6 +164,21 @@
 
   <footer class="footer"><span>little love project <b>♥</b></span><span>сделано с теплом · и немного с кодом</span><a href="#top">НАВЕРХ ↑</a></footer>
 
+  <div class="now-playing" id="now-playing">
+    <button class="now-playing-button" id="now-playing-toggle" type="button" aria-label="Включить фоновую музыку" aria-pressed="false">
+      <span class="now-playing-vinyl" aria-hidden="true"><span class="now-playing-vinyl-label"><b>AM</b><small>2013</small></span></span>
+      <span class="now-playing-copy">
+        <span class="now-playing-kicker"><i></i><span id="now-playing-status">СКОРО ЗАИГРАЕТ</span></span>
+        <strong>I Wanna Be Yours</strong>
+        <small>ARCTIC MONKEYS</small>
+      </span>
+      <span class="now-playing-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="now-playing-symbol" id="now-playing-symbol" aria-hidden="true">▶</span>
+    </button>
+  </div>
+  <audio id="background-audio" preload="auto" loop aria-label="Фоновая музыка I Wanna Be Yours">
+    <source src="i-wanna-be-yours.mp3" type="audio/mpeg">
+  </audio>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
 

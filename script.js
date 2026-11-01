@@ -3,6 +3,49 @@
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
+// Background soundtrack: start it from the welcome-screen click (a real user gesture).
+const backgroundAudio = $('#background-audio');
+const nowPlaying = $('#now-playing');
+const nowPlayingToggle = $('#now-playing-toggle');
+const nowPlayingStatus = $('#now-playing-status');
+const nowPlayingSymbol = $('#now-playing-symbol');
+
+function updateNowPlaying(isPlaying, statusText) {
+  if (!nowPlaying) return;
+  nowPlaying.classList.toggle('is-playing', isPlaying);
+  nowPlayingToggle?.setAttribute('aria-pressed', String(isPlaying));
+  nowPlayingToggle?.setAttribute('aria-label', isPlaying ? 'Поставить музыку на паузу' : 'Продолжить фоновую музыку');
+  if (nowPlayingStatus) nowPlayingStatus.textContent = statusText || (isPlaying ? 'СЕЙЧАС ИГРАЕТ' : 'НА ПАУЗЕ');
+  if (nowPlayingSymbol) nowPlayingSymbol.textContent = isPlaying ? 'Ⅱ' : '▶';
+}
+
+function startBackgroundMusic() {
+  if (!backgroundAudio) return;
+  backgroundAudio.volume = 0.52;
+  const playback = backgroundAudio.play();
+  if (playback && typeof playback.then === 'function') {
+    playback.then(() => updateNowPlaying(true, 'СЕЙЧАС ИГРАЕТ'))
+      .catch(() => updateNowPlaying(false, 'НАЖМИ, ЧТОБЫ ВКЛЮЧИТЬ'));
+  } else {
+    updateNowPlaying(true, 'СЕЙЧАС ИГРАЕТ');
+  }
+}
+
+function toggleBackgroundMusic() {
+  if (!backgroundAudio) return;
+  if (backgroundAudio.paused) {
+    startBackgroundMusic();
+  } else {
+    backgroundAudio.pause();
+    updateNowPlaying(false, 'НА ПАУЗЕ');
+  }
+}
+
+nowPlayingToggle?.addEventListener('click', toggleBackgroundMusic);
+backgroundAudio?.addEventListener('play', () => updateNowPlaying(true, 'СЕЙЧАС ИГРАЕТ'));
+backgroundAudio?.addEventListener('pause', () => updateNowPlaying(false, 'НА ПАУЗЕ'));
+backgroundAudio?.addEventListener('error', () => updateNowPlaying(false, 'МУЗЫКА НЕ ЗАГРУЗИЛАСЬ'));
+
 // The playful welcome screen.
 (() => {
   const intro = $('#intro-screen');
@@ -63,6 +106,8 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
   function celebrateWelcome() {
     if (opened) return;
+    // This click is the browser-approved gesture that lets the soundtrack start with sound.
+    startBackgroundMusic();
     opened = true;
     yes.disabled = true;
     no.disabled = true;
@@ -131,7 +176,7 @@ function burstHearts(count = 12, originX = window.innerWidth / 2, originY = wind
 
 // Reveal content smoothly as it enters the viewport.
 function initScrollReveals() {
-  const targets = $$('.hero-copy, .hero-visual, .section-head, .music-card, .mood-card, .memory-game, .jar-area, .date-builder, .letter-layout, .secret-card');
+  const targets = $$('.hero-copy, .hero-visual, .section-head, .mood-card, .memory-game, .jar-area, .date-builder, .letter-layout, .secret-card');
   targets.forEach((item, index) => {
     item.classList.add('reveal-item');
     if (item.classList.contains('mood-card')) item.style.setProperty('--reveal-delay', `${(index % 4) * 75}ms`);
@@ -166,101 +211,6 @@ if (menuButton && nav) {
     menuButton.textContent = '☰';
   }));
 }
-
-// The soundtrack uses SoundCloud's embedded player.
-// Playback starts only after the visitor presses Play inside the SoundCloud player.
-(() => {
-  const card = $('#music-card');
-  const openButton = $('#music-open');
-  const toggleButton = $('#music-toggle');
-  const playerWrap = $('#music-player-wrap');
-  const player = $('#soundcloud-player');
-  const fallback = $('#music-fallback');
-  const vinyl = $('#vinyl-button');
-  const easterEgg = $('#music-easter');
-  if (!card || !toggleButton || !playerWrap || !player) return;
-
-  const tracks = {
-    iwy: {
-      title: 'I Wanna Be Yours',
-      url: 'https://soundcloud.com/arcticmonkeys/i-wanna-be-yours'
-    },
-    '505': {
-      title: '505',
-      url: 'https://soundcloud.com/arcticmonkeys/505-1'
-    },
-    anthem: {
-      title: 'No. 1 Party Anthem',
-      url: 'https://soundcloud.com/arcticmonkeys_am/no-1-party-anthem'
-    }
-  };
-  let selected = 'iwy';
-  let opened = false;
-
-  function loadSelectedTrack() {
-    const track = tracks[selected];
-    const playerOptions = new URLSearchParams({
-      url: track.url,
-      color: '#c56e87',
-      auto_play: 'false',
-      hide_related: 'true',
-      show_comments: 'false',
-      show_user: 'true',
-      show_reposts: 'false',
-      visual: 'false'
-    });
-    player.src = `https://w.soundcloud.com/player/?${playerOptions.toString()}`;
-    player.title = `${track.title} — Arctic Monkeys · плеер SoundCloud`;
-    fallback.href = track.url;
-    fallback.textContent = `Открыть «${track.title}» на SoundCloud ↗`;
-  }
-
-  function showPlayer(scroll = false) {
-    opened = true;
-    card.classList.add('is-open');
-    playerWrap.hidden = false;
-    toggleButton.setAttribute('aria-expanded', 'true');
-    toggleButton.innerHTML = 'Спрятать плеер <span>×</span>';
-    loadSelectedTrack();
-    $('#music-hint').textContent = 'Нажми Play прямо в плеере SoundCloud — и пусть эта песня будет вашим общим моментом. ♡';
-    if (scroll) {
-      $('#soundtrack').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }
-
-  function hidePlayer() {
-    opened = false;
-    card.classList.remove('is-open');
-    playerWrap.hidden = true;
-    player.src = '';
-    toggleButton.setAttribute('aria-expanded', 'false');
-    toggleButton.innerHTML = 'Открыть плеер <span>♫</span>';
-    $('#music-hint').textContent = 'Музыка не включается сама — нажми Play в плеере, когда захочется. ♡';
-  }
-
-  $$('.track-tab').forEach(button => button.addEventListener('click', () => {
-    selected = button.dataset.track;
-    $$('.track-tab').forEach(tab => {
-      const active = tab === button;
-      tab.classList.toggle('active', active);
-      tab.setAttribute('aria-pressed', String(active));
-    });
-    if (opened) loadSelectedTrack();
-    else $('#music-hint').textContent = `Выбрано: ${tracks[selected].title}. Нажми «Открыть плеер», чтобы послушать. ♡`;
-  }));
-
-  toggleButton.addEventListener('click', () => opened ? hidePlayer() : showPlayer());
-  openButton?.addEventListener('click', () => showPlayer(true));
-  vinyl?.addEventListener('click', () => {
-    const visible = !easterEgg.hidden;
-    easterEgg.hidden = visible;
-    vinyl.setAttribute('aria-pressed', String(!visible));
-    if (!visible) {
-      burstHearts(12, window.innerWidth * .26, window.innerHeight * .48);
-      toast('Маленькая музыкальная договорённость для вас двоих ♡');
-    }
-  });
-})();
 
 // Send a little burst of hearts.
 const sendHeart = $('#send-heart');
