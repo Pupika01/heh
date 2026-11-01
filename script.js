@@ -836,7 +836,9 @@ heartLocations.forEach((item) => {
     burstHearts(28, window.innerWidth / 2, window.innerHeight * .55);
     claimTicket.innerHTML = 'Наше приглашение принято ♥';
     claimTicket.classList.add('ticket-saved');
-    toast('Тогда это наше маленькое обещание. До скорой встречи ♥');
+    toast('Тогда это наше маленькое обещание. Открываю наш чат ♥');
+    // Open Telegram directly from the user's click so browsers do not block the new tab.
+    window.open('https://t.me/veynor0', '_blank', 'noopener,noreferrer');
   });
   reset();
 })();
