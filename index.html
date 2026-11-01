@@ -184,6 +184,21 @@
     <div class="cosmos-nebula cosmos-nebula-three" aria-hidden="true"></div>
     <div class="cosmos-starfield" id="cosmos-starfield" aria-hidden="true"></div>
     <button class="cosmos-close" id="cosmos-close" type="button" aria-label="Закрыть секрет">×</button>
+    <div class="cosmos-intro" id="cosmos-intro" hidden>
+      <div class="cosmos-intro-card">
+        <span class="cosmos-intro-kicker"><i>✦</i> МАЛЕНЬКОЕ ЗАДАНИЕ ДЛЯ ТЕБЯ <i>✦</i></span>
+        <div class="cosmos-intro-emblem" aria-hidden="true"><span>✧</span><i></i><b></b></div>
+        <h3 id="cosmos-intro-title">Готова поймать<br><em>наши звёзды?</em></h3>
+        <p id="cosmos-intro-copy">В этом небе спрятались семь звёзд. Они будут появляться по одной — успей коснуться каждой, пока не истекли три секунды.</p>
+        <div class="cosmos-intro-rules">
+          <span><b>3</b><small>СЕКУНДЫ</small></span>
+          <span><b>7</b><small>ЗВЁЗД</small></span>
+          <span><b>∞</b><small>ПОПЫТОК</small></span>
+        </div>
+        <button class="cosmos-begin" id="cosmos-begin" type="button">Я готова <span>✦</span></button>
+        <small class="cosmos-intro-foot">Не переживай, пропущенные звёзды можно ловить снова ♡</small>
+      </div>
+    </div>
     <div class="cosmos-content">
       <div class="cosmos-heading">
         <p class="cosmos-kicker"><span>✦</span> ТОЛЬКО ДЛЯ ТЕБЯ · ГЛАВА II <span>✦</span></p>
@@ -206,16 +221,24 @@
       <div class="cosmos-board" id="cosmos-board" aria-label="Игровое поле со спрятанными звёздами">
         <svg class="cosmos-constellation" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M160 250 L720 170 L470 400 L830 530 L240 690 L590 790 L910 340" /></svg>
       </div>
-      <div class="cosmos-complete" id="cosmos-complete" hidden>
-        <span class="cosmos-complete-stamp">✧ СОЗВЕЗДИЕ СОБРАНО ✧</span>
-        <h3>Ты нашла наше<br><em>маленькое небо.</em></h3>
-        <p>Пусть между нами иногда целые страны, но мне нравится думать, что мы всё равно смотрим на одни и те же звёзды. А однажды будем смотреть на них рядом.</p>
-        <div class="cosmos-ticket-details"><span>МЕСТО <b>Рядом друг с другом</b></span><span>КОГДА <b>При первой возможности</b></span></div>
-        <button class="btn btn-primary ticket-claim" id="claim-ticket" type="button">Сохранить наше приглашение <span>♡</span></button>
-        <small>ОДИН ВЕЧЕР · ТОЛЬКО МЫ · БЕЗ СПЕШКИ</small>
-      </div>
       <div class="cosmos-bottom-note">СДЕЛАНО ИЗ НЕЖНОСТИ, ПАРЫ ПИКСЕЛЕЙ И ЦЕЛОЙ ВСЕЛЕННОЙ ♡</div>
     </div>
+      <div class="cosmos-complete" id="cosmos-complete" hidden aria-labelledby="cosmos-prize-title">
+        <div class="cosmos-prize-ticket">
+          <span class="cosmos-prize-topline">ЛИЧНОЕ ПРИГЛАШЕНИЕ · № 007</span>
+          <div class="cosmos-prize-emblem" aria-hidden="true">✧</div>
+          <span class="cosmos-complete-stamp">✧ СОЗВЕЗДИЕ СОБРАНО ✧</span>
+          <h3 id="cosmos-prize-title">Ты нашла наше<br><em>маленькое небо.</em></h3>
+          <p>Пусть между нами иногда целые страны, но мне нравится думать, что мы всё равно смотрим на одни и те же звёзды. А однажды будем смотреть на них рядом.</p>
+          <div class="cosmos-ticket-details">
+            <span><i>МЕСТО</i><b>Рядом друг с другом</b></span>
+            <span><i>КОГДА</i><b>При первой возможности</b></span>
+          </div>
+          <button class="btn btn-primary ticket-claim" id="claim-ticket" type="button">Сохранить наше приглашение <span>♡</span></button>
+          <small>ОДИН ВЕЧЕР · ТОЛЬКО МЫ · БЕЗ СПЕШКИ</small>
+          <span class="cosmos-prize-footer">С ЛЮБОВЬЮ, ДЛЯ ТЕБЯ <b>♡</b></span>
+        </div>
+      </div>
   </section>
 
   <section class="hug-overlay" id="hug-overlay" role="dialog" aria-modal="true" aria-labelledby="hug-title" aria-hidden="true" hidden>

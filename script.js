@@ -373,6 +373,10 @@ heartLocations.forEach((item) => {
   const board = $('#cosmos-board');
   const closeButton = $('#cosmos-close');
   const startButton = $('#start-secret');
+  const intro = $('#cosmos-intro');
+  const introTitle = $('#cosmos-intro-title');
+  const introCopy = $('#cosmos-intro-copy');
+  const beginButton = $('#cosmos-begin');
   const progressFill = $('#star-progress-fill');
   const progressText = $('#star-progress-text');
   const whisper = $('#cosmos-whisper');
@@ -382,7 +386,7 @@ heartLocations.forEach((item) => {
   const timerLabel = $('#cosmos-timer-label');
   const roundLabel = $('#star-round-label');
   const attemptsLabel = $('#star-attempts');
-  if (!overlay || !board || !startButton) return;
+  if (!overlay || !board || !startButton || !intro || !beginButton) return;
 
   const starPositions = [
     [16, 25], [72, 17], [47, 40], [83, 53], [24, 69], [59, 79], [91, 34]
@@ -600,11 +604,40 @@ heartLocations.forEach((item) => {
     overlay.hidden = false;
     overlay.setAttribute('aria-hidden', 'false');
     document.body.classList.add('cosmos-open');
-    requestAnimationFrame(() => {
-      overlay.classList.add('is-open');
-      if (!isComplete && !activeStar) startRound();
-    });
-    window.setTimeout(() => closeButton?.focus(), 120);
+
+    // Re-entry always pauses at a calm ready screen. A completed game reopens its prize.
+    if (isComplete) {
+      intro.hidden = true;
+      overlay.classList.remove('cosmos-idle');
+      overlay.classList.add('cosmos-playing');
+    } else {
+      overlay.classList.remove('cosmos-playing');
+      overlay.classList.add('cosmos-idle');
+      intro.hidden = false;
+      if (foundStars > 0) {
+        introTitle.innerHTML = 'Продолжим<br><em>собирать наше небо?</em>';
+        introCopy.textContent = `Ты уже поймала ${foundStars} из ${TOTAL} звёзд. Осталось ещё ${TOTAL - foundStars} — каждая появится на три секунды.`;
+        beginButton.innerHTML = 'Продолжить <span>✦</span>';
+      } else {
+        introTitle.innerHTML = 'Готова поймать<br><em>наши звёзды?</em>';
+        introCopy.textContent = 'В этом небе спрятались семь звёзд. Они будут появляться по одной — успей коснуться каждой, пока не истекли три секунды.';
+        beginButton.innerHTML = 'Я готова <span>✦</span>';
+      }
+    }
+
+    requestAnimationFrame(() => overlay.classList.add('is-open'));
+    window.setTimeout(() => (isComplete ? closeButton : beginButton)?.focus(), 140);
+  }
+
+  function beginCosmosGame() {
+    if (overlay.hidden || isClosing || isComplete) return;
+    intro.hidden = true;
+    overlay.classList.remove('cosmos-idle');
+    overlay.classList.add('cosmos-playing');
+    whisper.textContent = 'Смотри внимательно… первая звезда уже рядом. ✧';
+    window.setTimeout(() => {
+      if (!overlay.hidden && !isClosing && !isComplete && !activeStar) startRound();
+    }, 360);
   }
 
   function closeCosmos() {
@@ -619,7 +652,8 @@ heartLocations.forEach((item) => {
       activeStarIndex = -1;
       board.classList.remove('has-active-target');
     }
-    overlay.classList.remove('is-open');
+    overlay.classList.remove('is-open', 'cosmos-idle', 'cosmos-playing');
+    intro.hidden = true;
     overlay.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('cosmos-open');
     window.setTimeout(() => {
@@ -630,6 +664,7 @@ heartLocations.forEach((item) => {
   }
 
   startButton.addEventListener('click', openCosmos);
+  beginButton.addEventListener('click', beginCosmosGame);
   closeButton?.addEventListener('click', closeCosmos);
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && !overlay.hidden) closeCosmos();
