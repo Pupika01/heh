@@ -167,14 +167,14 @@ if (menuButton && nav) {
   }));
 }
 
-// The soundtrack uses official Arctic Monkeys audio uploads embedded from YouTube.
-// Playback starts only after the visitor presses Play in the YouTube player.
+// The soundtrack uses SoundCloud's embedded player.
+// Playback starts only after the visitor presses Play inside the SoundCloud player.
 (() => {
   const card = $('#music-card');
   const openButton = $('#music-open');
   const toggleButton = $('#music-toggle');
   const playerWrap = $('#music-player-wrap');
-  const player = $('#youtube-player');
+  const player = $('#soundcloud-player');
   const fallback = $('#music-fallback');
   const vinyl = $('#vinyl-button');
   const easterEgg = $('#music-easter');
@@ -183,18 +183,15 @@ if (menuButton && nav) {
   const tracks = {
     iwy: {
       title: 'I Wanna Be Yours',
-      id: 'nyuo9-OjNNg',
-      url: 'https://www.youtube.com/watch?v=nyuo9-OjNNg'
+      url: 'https://soundcloud.com/arcticmonkeys/i-wanna-be-yours'
     },
     '505': {
       title: '505',
-      id: 'KfEEm4Zx-EU',
-      url: 'https://www.youtube.com/watch?v=KfEEm4Zx-EU'
+      url: 'https://soundcloud.com/arcticmonkeys/505-1'
     },
     anthem: {
       title: 'No. 1 Party Anthem',
-      id: 'mGUjVbsYG6E',
-      url: 'https://www.youtube.com/watch?v=mGUjVbsYG6E'
+      url: 'https://soundcloud.com/arcticmonkeys_am/no-1-party-anthem'
     }
   };
   let selected = 'iwy';
@@ -202,10 +199,20 @@ if (menuButton && nav) {
 
   function loadSelectedTrack() {
     const track = tracks[selected];
-    player.src = `https://www.youtube-nocookie.com/embed/${track.id}?rel=0&playsinline=1`;
-    player.title = `${track.title} — Arctic Monkeys · официальный YouTube-плеер`;
+    const playerOptions = new URLSearchParams({
+      url: track.url,
+      color: '#c56e87',
+      auto_play: 'false',
+      hide_related: 'true',
+      show_comments: 'false',
+      show_user: 'true',
+      show_reposts: 'false',
+      visual: 'false'
+    });
+    player.src = `https://w.soundcloud.com/player/?${playerOptions.toString()}`;
+    player.title = `${track.title} — Arctic Monkeys · плеер SoundCloud`;
     fallback.href = track.url;
-    fallback.textContent = `Открыть «${track.title}» на YouTube ↗`;
+    fallback.textContent = `Открыть «${track.title}» на SoundCloud ↗`;
   }
 
   function showPlayer(scroll = false) {
@@ -215,7 +222,7 @@ if (menuButton && nav) {
     toggleButton.setAttribute('aria-expanded', 'true');
     toggleButton.innerHTML = 'Спрятать плеер <span>×</span>';
     loadSelectedTrack();
-    $('#music-hint').textContent = 'Нажми Play прямо в плеере — и пусть эта песня будет вашим общим моментом. ♡';
+    $('#music-hint').textContent = 'Нажми Play прямо в плеере SoundCloud — и пусть эта песня будет вашим общим моментом. ♡';
     if (scroll) {
       $('#soundtrack').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
