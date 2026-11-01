@@ -20,8 +20,9 @@
     <a class="brand" href="#top" aria-label="На главную"><span>♥</span> little love project</a>
     <nav class="nav" id="nav">
       <a href="#mood">Настроение</a>
+      <a href="#game">Мини-игра</a>
       <a href="#reasons">Причины</a>
-      <a href="#date">Свидание</a>
+      <a href="#date">На расстоянии</a>
     </nav>
     <button class="menu-btn" id="menu-btn" aria-label="Открыть меню" aria-expanded="false" type="button">☰</button>
   </header>
@@ -31,7 +32,7 @@
       <div class="hero-copy">
         <div class="pill"><span class="pulse-dot"></span> ЭТО НЕ ПРОСТО САЙТ</div>
         <h1>Эй, у меня<br>для тебя <em>кое-что.</em></h1>
-        <p class="hero-lead">Небольшое приключение из милых мелочей, улыбок и всего того, что хочется тебе подарить. Тут можно нажимать почти на всё — обещаю, это часть задумки.</p>
+        <p class="hero-lead">Между нами могут быть километры и разные часовые пояса, но это не мешает устроить маленькое приключение прямо здесь. Тут можно играть, выбирать и находить сюрпризы. ♥</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#mood">Начать приключение <span>↗</span></a>
           <button class="btn btn-ghost" id="send-heart" type="button">Отправить сердечко <span>♡</span></button>
@@ -62,9 +63,32 @@
       </article>
     </section>
 
+    <section class="game-section section wrap" id="game">
+      <div class="section-head centered"><p class="eyebrow">02 / МИНИ-ИГРА · НАШ КОСМОС</p><h2>Поймай пары<br><em>на расстоянии.</em></h2><p>Открой две карточки за ход и найди все пары. У каждой пары спрятано маленькое послание.</p></div>
+      <div class="memory-game" id="memory-game">
+        <div class="game-topline"><span class="game-chip">✦ МИССИЯ: 6 ПАР</span><span class="game-stats"><b id="moves-count">0</b> ходов <i>·</i> <b id="pairs-count">0</b>/6 пар</span></div>
+        <div class="memory-grid" id="memory-grid" role="group" aria-label="Карточки игры на память">
+          <button class="memory-card" type="button" data-card="0" aria-label="Открыть карточку 1"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="1" aria-label="Открыть карточку 2"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="2" aria-label="Открыть карточку 3"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="3" aria-label="Открыть карточку 4"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="4" aria-label="Открыть карточку 5"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="5" aria-label="Открыть карточку 6"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="6" aria-label="Открыть карточку 7"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="7" aria-label="Открыть карточку 8"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="8" aria-label="Открыть карточку 9"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="9" aria-label="Открыть карточку 10"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="10" aria-label="Открыть карточку 11"><span class="card-back">♡</span><span class="card-front"></span></button>
+          <button class="memory-card" type="button" data-card="11" aria-label="Открыть карточку 12"><span class="card-back">♡</span><span class="card-front"></span></button>
+        </div>
+        <div class="game-bottom"><p id="game-message" aria-live="polite">Подсказка: две одинаковые звёздочки — это пара. Начинай! ♡</p><button class="btn btn-ghost game-reset" id="reset-game" type="button">Перемешать ↻</button></div>
+        <div class="game-win" id="game-win" hidden><span>МИССИЯ ВЫПОЛНЕНА · ♥</span><h3>Нас разделяют километры,<br>но не интерес друг к другу.</h3><p>Ты нашла все пары. А главный приз — маленькое напоминание: ты можешь написать мне в любой момент, даже если между нами целая карта мира.</p><button class="btn btn-primary" id="win-heart" type="button">Забрать объятие <span>♡</span></button></div>
+      </div>
+    </section>
+
     <section class="reasons-section" id="reasons">
       <div class="wrap section">
-        <div class="section-head centered"><p class="eyebrow">02 / МАЛЕНЬКАЯ БАНКА</p><h2>Причины, почему<br><em>ты особенная.</em></h2><p>Нажми на банку — достань одну записку. Можно открывать снова и снова.</p></div>
+        <div class="section-head centered"><p class="eyebrow">03 / МАЛЕНЬКАЯ БАНКА</p><h2>Причины, почему<br><em>ты особенная.</em></h2><p>Нажми на банку — достань одну записку. Можно открывать снова и снова.</p></div>
         <div class="jar-area">
           <div class="jar-glow"></div>
           <button class="jar" id="draw-reason" type="button" aria-label="Достать новую записку">
@@ -77,27 +101,27 @@
     </section>
 
     <section class="section wrap" id="date">
-      <div class="section-head"><p class="eyebrow">03 / ПЛАН НА ДВОИХ</p><h2>Давай соберём<br><em>идеальный вечер?</em></h2><p>Выбери по одному варианту в каждой строке — и я соберу маленький план.</p></div>
+      <div class="section-head"><p class="eyebrow">04 / СВИДАНИЕ НА РАССТОЯНИИ</p><h2>Давай устроим<br><em>вечер вдвоём?</em></h2><p>Даже если мы сейчас в разных странах, можно провести время вместе. Выбери свой вариант онлайн-свидания.</p></div>
       <div class="date-builder">
-        <div class="choice-group"><h3><span>01</span> Что делаем?</h3><div class="choice-row" data-choice="activity"><button class="choice active" data-value="Устроим домашний кинотеатр 🎬">🎬 Кино дома</button><button class="choice" data-value="Пойдём гулять без маршрута 🌆">🌆 Прогулка</button><button class="choice" data-value="Устроим маленькое приключение 🧭">🧭 Приключение</button></div></div>
-        <div class="choice-group"><h3><span>02</span> Что берём?</h3><div class="choice-row" data-choice="snack"><button class="choice active" data-value="что-нибудь вкусное 🍓">🍓 Вкусняшки</button><button class="choice" data-value="пиццу на двоих 🍕">🍕 Пиццу</button><button class="choice" data-value="чай и что-то сладкое ☕">☕ Чай и сладкое</button></div></div>
-        <div class="choice-group"><h3><span>03</span> Какая атмосфера?</h3><div class="choice-row" data-choice="vibe"><button class="choice active" data-value="уютно и спокойно 🕯️">🕯️ Уютно</button><button class="choice" data-value="смешно и спонтанно 🤭">🤭 Весело</button><button class="choice" data-value="как в маленьком фильме ✨">✨ Как в кино</button></div></div>
+        <div class="choice-group"><h3><span>01</span> Чем займёмся?</h3><div class="choice-row" data-choice="activity"><button class="choice active" data-value="посмотрим один и тот же фильм одновременно 🎬">🎬 Фильм синхронно</button><button class="choice" data-value="созвонимся и проговорим хоть весь вечер ☎️">☎️ Долгий созвон</button><button class="choice" data-value="включим одну музыку и поделимся любимыми треками 🎧">🎧 Общий плейлист</button></div></div>
+        <div class="choice-group"><h3><span>02</span> Что приготовим каждый у себя?</h3><div class="choice-row" data-choice="snack"><button class="choice active" data-value="чем-нибудь вкусным 🍓">🍓 Вкусняшки</button><button class="choice" data-value="своей любимой пиццей 🍕">🍕 Пицца</button><button class="choice" data-value="чаем и чем-нибудь сладким ☕">☕ Чай и сладкое</button></div></div>
+        <div class="choice-group"><h3><span>03</span> Какое настроение?</h3><div class="choice-row" data-choice="vibe"><button class="choice active" data-value="уютно и спокойно 🕯️">🕯️ Уютно</button><button class="choice" data-value="смешно и спонтанно 🤭">🤭 Весело</button><button class="choice" data-value="как в маленьком фильме ✨">✨ Как в кино</button></div></div>
         <button class="btn btn-primary build-btn" id="build-date" type="button">Собрать наш вечер <span>♡</span></button>
-        <div class="date-result" id="date-result" aria-live="polite" hidden><span class="reveal-label">ТВОЙ ПЛАН ГОТОВ</span><p id="date-plan"></p><small>Это просто приглашение. Самое важное — чтобы нам обоим хотелось ♡</small></div>
+        <div class="date-result" id="date-result" aria-live="polite" hidden><span class="reveal-label">ТВОЙ ПЛАН ГОТОВ</span><p id="date-plan"></p><small>Каждый у себя, но вечер — общий. Даже если у нас разные часовые пояса. ♡</small></div>
       </div>
     </section>
 
     <section class="letter-section">
       <div class="wrap letter-layout">
-        <div><p class="eyebrow light">04 / НЕБОЛЬШАЯ ПАУЗА</p><h2>И всё-таки<br><em>пару слов.</em></h2><p class="letter-intro">Интерактивы — это весело, но кое-что хочется сказать без кнопок и эффектов.</p></div>
-        <article class="letter-card"><span class="letter-top">ЛИЧНОЕ · ♡</span><p>Я не хочу, чтобы этот сайт был просто набором красивых фраз. Мне хочется, чтобы за ними стояли внимание, забота, смешные моменты и поступки.</p><p>Спасибо, что ты есть в моей жизни. Мне интересно узнавать тебя дальше — твоё настроение, мысли, мечты и даже самые обычные истории за день.</p><p>Я не обещаю быть идеальным, но хочу стараться делать рядом со мной больше хорошего.</p><strong>Обнимаю мысленно. Очень-очень. ♡</strong><span class="letter-sign">твой человек</span></article>
+        <div><p class="eyebrow light">05 / НЕБОЛЬШАЯ ПАУЗА</p><h2>И всё-таки<br><em>пару слов.</em></h2><p class="letter-intro">Интерактивы — это весело, но кое-что хочется сказать без кнопок и эффектов.</p></div>
+        <article class="letter-card"><span class="letter-top">ЛИЧНОЕ · ♡</span><p>Я не хочу, чтобы этот сайт был просто набором красивых фраз. Мне хочется, чтобы за ними стояли внимание, забота, смешные моменты и поступки.</p><p>Спасибо, что ты есть в моей жизни. Даже когда нас разделяют разные страны, мне интересно узнавать тебя дальше — твоё настроение, мысли, мечты и самые обычные истории за день.</p><p>Я не обещаю быть идеальным, но хочу стараться делать рядом со мной больше хорошего.</p><strong>Пока обнимаю мысленно. А при встрече — уже по-настоящему. ♡</strong><span class="letter-sign">твой человек</span></article>
       </div>
     </section>
 
     <section class="secret-section wrap section" id="secret">
       <div class="secret-card">
         <div class="secret-deco">♡</div>
-        <p class="eyebrow">05 / СЕКРЕТНЫЙ УРОВЕНЬ</p>
+        <p class="eyebrow">06 / СЕКРЕТНЫЙ УРОВЕНЬ</p>
         <h2>На этой странице<br>спрятались <em>три сердца.</em></h2>
         <p>Найди их — и откроется маленький секрет. Одно уже совсем рядом, остальные прячутся по странице.</p>
         <div class="heart-progress" aria-live="polite"><span id="heart-progress-fill"></span></div>

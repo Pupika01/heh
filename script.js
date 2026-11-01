@@ -99,7 +99,7 @@ $('#draw-reason').addEventListener('click', () => {
 });
 
 // Build a low-pressure date invitation from choices.
-const dateChoices = { activity: 'Устроим домашний кинотеатр 🎬', snack: 'что-нибудь вкусное 🍓', vibe: 'уютно и спокойно 🕯️' };
+const dateChoices = { activity: 'посмотрим один и тот же фильм одновременно 🎬', snack: 'чем-нибудь вкусным 🍓', vibe: 'уютно и спокойно 🕯️' };
 $$('.choice-row').forEach(row => {
   $$('.choice', row).forEach(button => button.addEventListener('click', () => {
     $$('.choice', row).forEach(item => item.classList.remove('active'));
@@ -108,7 +108,7 @@ $$('.choice-row').forEach(row => {
   }));
 });
 $('#build-date').addEventListener('click', () => {
-  $('#date-plan').textContent = `${dateChoices.activity}, возьмём ${dateChoices.snack}, а атмосферу сделаем ${dateChoices.vibe}. Осталось только выбрать день — и получится наше маленькое приключение. ♡`;
+  $('#date-plan').textContent = `${dateChoices.activity}, устроимся ${dateChoices.vibe}, а перекус будет ${dateChoices.snack}. Останется договориться о времени, когда нам обоим удобно — и получится наше маленькое онлайн-свидание. ♡`;
   $('#date-result').hidden = false;
   $('#date-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   burstHearts(8, window.innerWidth * .5, window.innerHeight * .72);
@@ -145,3 +145,108 @@ heartLocations.forEach((item, index) => {
   });
   host.appendChild(button);
 });
+
+// Memory game: six pairs, with a little note attached to every matched pair.
+(() => {
+  const grid = $('#memory-grid');
+  if (!grid) return;
+  const cards = $$('.memory-card', grid);
+  const symbols = [
+    { id: 'star', icon: '✦', note: 'Даже на расстоянии можно делиться одним и тем же небом. ✨' },
+    { id: 'moon', icon: '☾', note: 'Пусть у нас разные окна и часовые пояса, но добрые мысли находят дорогу. 🌙' },
+    { id: 'heart', icon: '♥', note: 'Вот тебе напоминание: о тебе думают с теплом. ♥' },
+    { id: 'comet', icon: '☄', note: 'Ты — моё любимое неожиданное событие. ☄' },
+    { id: 'flower', icon: '✿', note: 'Пусть сегодня у тебя будет хотя бы одна причина улыбнуться. ✿' },
+    { id: 'spark', icon: '♡', note: 'Расстояние измеряется километрами, а внимание — маленькими поступками. ♡' }
+  ];
+  let deck = [];
+  let opened = [];
+  let matched = 0;
+  let moves = 0;
+  let locked = false;
+  let mismatchTimer = null;
+
+  function shuffle(items) {
+    const result = [...items];
+    for (let i = result.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+
+  function paintStats() {
+    $('#moves-count').textContent = String(moves);
+    $('#pairs-count').textContent = String(matched);
+  }
+
+  function reset() {
+    clearTimeout(mismatchTimer);
+    deck = shuffle(symbols.flatMap(item => [item, item]));
+    opened = [];
+    matched = 0;
+    moves = 0;
+    locked = false;
+    $('#game-win').hidden = true;
+    $('#game-message').textContent = 'Подсказка: две одинаковые звёздочки — это пара. Начинай! ♡';
+    cards.forEach((card, index) => {
+      card.className = 'memory-card';
+      card.disabled = false;
+      card.dataset.pair = deck[index].id;
+      $('.card-front', card).textContent = deck[index].icon;
+      card.setAttribute('aria-label', `Закрытая карточка ${index + 1}`);
+    });
+    paintStats();
+  }
+
+  function selectCard(card) {
+    if (locked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+    card.classList.add('flipped');
+    card.setAttribute('aria-label', `Открыто: ${deck[Number(card.dataset.card)].icon}`);
+    opened.push(card);
+    if (opened.length < 2) return;
+    moves += 1;
+    paintStats();
+    const [first, second] = opened;
+    const firstSymbol = deck[Number(first.dataset.card)];
+    const secondSymbol = deck[Number(second.dataset.card)];
+    if (firstSymbol.id === secondSymbol.id) {
+      first.classList.remove('flipped');
+      second.classList.remove('flipped');
+      first.classList.add('matched');
+      second.classList.add('matched');
+      first.disabled = true;
+      second.disabled = true;
+      matched += 1;
+      paintStats();
+      $('#game-message').textContent = firstSymbol.note;
+      opened = [];
+      burstHearts(5, window.innerWidth / 2, window.innerHeight * .62);
+      if (matched === symbols.length) {
+        $('#game-message').textContent = 'Все пары собраны — ты справилась! ♥';
+        $('#game-win').hidden = false;
+        $('#game-win').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        burstHearts(22, window.innerWidth / 2, window.innerHeight * .6);
+      }
+    } else {
+      locked = true;
+      $('#game-message').textContent = 'Почти! Эти две не пара. Попробуй ещё раз. ♡';
+      mismatchTimer = setTimeout(() => {
+        opened.forEach(item => {
+          item.classList.remove('flipped');
+          item.setAttribute('aria-label', `Закрытая карточка ${Number(item.dataset.card) + 1}`);
+        });
+        opened = [];
+        locked = false;
+      }, 850);
+    }
+  }
+
+  cards.forEach(card => card.addEventListener('click', () => selectCard(card)));
+  $('#reset-game').addEventListener('click', reset);
+  $('#win-heart').addEventListener('click', () => {
+    burstHearts(28, window.innerWidth / 2, window.innerHeight * .55);
+    toast('Объятие отправлено через весь мир. ♥');
+  });
+  reset();
+})();
