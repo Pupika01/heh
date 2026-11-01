@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fff7f5">
-  <meta name="description" content="Маленький интерактивный сюрприз, сделанный с любовью.">
-  <title>Для тебя ♡</title>
+  <meta name="description" content="Небольшое романтичное приключение, полное игр, сюрпризов и сердечек.">
+  <title>Маленький сюрприз ♡</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,30 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="ambient ambient-one" aria-hidden="true"></div>
+
+  <section class="intro-screen" id="intro-screen" aria-labelledby="intro-title">
+    <div class="intro-grain" aria-hidden="true"></div>
+    <div class="intro-glow intro-glow-a" aria-hidden="true"></div>
+    <div class="intro-glow intro-glow-b" aria-hidden="true"></div>
+    <div class="intro-sparkles" aria-hidden="true"><i>✦</i><i>✧</i><i>✦</i><i>·</i><i>✧</i><i>·</i><i>✦</i><i>✧</i></div>
+    <div class="intro-card" id="intro-card">
+      <div class="intro-mark"><span>♥</span><i></i><i></i><i></i></div>
+      <p class="intro-kicker"><span></span> У МЕНЯ К ТЕБЕ ОДИН ВОПРОС</p>
+      <p class="intro-pretitle">Только отвечай честно</p>
+      <h1 id="intro-title">Ты меня<br><em>любишь?</em></h1>
+      <p class="intro-copy">Я, конечно, уже догадываюсь…<br>но всё равно хочу услышать «да». ♡</p>
+      <div class="answer-zone" id="answer-zone" aria-label="Выбери ответ">
+        <button class="answer-btn answer-yes" id="answer-yes" type="button">Конечно, да <span>♥</span></button>
+        <button class="answer-btn answer-no" id="answer-no" type="button">Нет <span>🙃</span></button>
+      </div>
+      <p class="intro-hint" id="intro-hint" aria-live="polite">Подсказка: правильный ответ где-то рядом ✨</p>
+      <div class="intro-bottom"><span>MADE WITH LOVE</span><b>♡</b><span>JUST FOR YOU</span></div>
+    </div>
+    <p class="intro-footnote">маленький сайт · большое чувство</p>
+  </section>
+
+  <div class="site-shell" id="site-shell" hidden>
+<div class="ambient ambient-one" aria-hidden="true"></div>
   <div class="ambient ambient-two" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="На главную"><span>♥</span> little love project</a>
@@ -22,7 +45,7 @@
       <a href="#mood">Настроение</a>
       <a href="#game">Мини-игра</a>
       <a href="#reasons">Причины</a>
-      <a href="#date">На расстоянии</a>
+      <a href="#date">Наш вечер</a>
     </nav>
     <button class="menu-btn" id="menu-btn" aria-label="Открыть меню" aria-expanded="false" type="button">☰</button>
   </header>
@@ -37,7 +60,7 @@
           <a class="btn btn-primary" href="#mood">Начать приключение <span>↗</span></a>
           <button class="btn btn-ghost" id="send-heart" type="button">Отправить сердечко <span>♡</span></button>
         </div>
-        <p class="tiny-note" id="heart-status" aria-live="polite">P.S. сердечки долетают мгновенно</p>
+        <p class="tiny-note" id="heart-status" aria-live="polite">P.S. это сердечко уже у тебя ♡</p>
       </div>
       <div class="hero-visual" aria-label="Большое сердечко среди звёзд">
         <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
@@ -51,7 +74,7 @@
     </section>
 
     <section class="section wrap" id="mood">
-      <div class="section-head"><p class="eyebrow">01 / ПРОВЕРКА НАСТРОЕНИЯ</p><h2>Какой у тебя<br><em>сегодня день?</em></h2><p>Выбери то, что ближе. Для каждого варианта я кое-что приготовил.</p></div>
+      <div class="section-head"><p class="eyebrow">01 / КАК ТЫ СЕГОДНЯ?</p><h2>Какой у тебя<br><em>сегодня день?</em></h2><p>Выбери то, что ближе. Для каждого варианта я кое-что приготовил.</p></div>
       <div class="mood-grid" role="group" aria-label="Выбери настроение">
         <button class="mood-card" data-mood="tired" type="button"><span class="mood-emoji">☁️</span><b>Немного устала</b><small>Хочется выдохнуть</small></button>
         <button class="mood-card" data-mood="miss" type="button"><span class="mood-emoji">🌙</span><b>Скучаю</b><small>Хочется тепла</small></button>
@@ -64,9 +87,9 @@
     </section>
 
     <section class="game-section section wrap" id="game">
-      <div class="section-head centered"><p class="eyebrow">02 / МИНИ-ИГРА · НАШ КОСМОС</p><h2>Поймай пары<br><em>на расстоянии.</em></h2><p>Открой две карточки за ход и найди все пары. У каждой пары спрятано маленькое послание.</p></div>
+      <div class="section-head centered"><p class="eyebrow">02 / НЕБОЛЬШАЯ ИГРА · 6 ПАР</p><h2>Найди все<br><em>маленькие совпадения.</em></h2><p>Переворачивай карточки по две и собирай пары. Каждое совпадение откроет короткое послание.</p></div>
       <div class="memory-game" id="memory-game">
-        <div class="game-topline"><span class="game-chip">✦ МИССИЯ: 6 ПАР</span><span class="game-stats"><b id="moves-count">0</b> ходов <i>·</i> <b id="pairs-count">0</b>/6 пар</span></div>
+        <div class="game-topline"><span class="game-chip">✦ НАЙДИ 6 ПАР</span><span class="game-stats"><b id="moves-count">0</b> ходов <i>·</i> <b id="pairs-count">0</b>/6 пар</span></div>
         <div class="memory-grid" id="memory-grid" role="group" aria-label="Карточки игры на память">
           <button class="memory-card" type="button" data-card="0" aria-label="Открыть карточку 1"><span class="card-back">♡</span><span class="card-front"></span></button>
           <button class="memory-card" type="button" data-card="1" aria-label="Открыть карточку 2"><span class="card-back">♡</span><span class="card-front"></span></button>
@@ -81,33 +104,33 @@
           <button class="memory-card" type="button" data-card="10" aria-label="Открыть карточку 11"><span class="card-back">♡</span><span class="card-front"></span></button>
           <button class="memory-card" type="button" data-card="11" aria-label="Открыть карточку 12"><span class="card-back">♡</span><span class="card-front"></span></button>
         </div>
-        <div class="game-bottom"><p id="game-message" aria-live="polite">Подсказка: две одинаковые звёздочки — это пара. Начинай! ♡</p><button class="btn btn-ghost game-reset" id="reset-game" type="button">Перемешать ↻</button></div>
-        <div class="game-win" id="game-win" hidden><span>МИССИЯ ВЫПОЛНЕНА · ♥</span><h3>Нас разделяют километры,<br>но не интерес друг к другу.</h3><p>Ты нашла все пары. А главный приз — маленькое напоминание: ты можешь написать мне в любой момент, даже если между нами целая карта мира.</p><button class="btn btn-primary" id="win-heart" type="button">Забрать объятие <span>♡</span></button></div>
+        <div class="game-bottom"><p id="game-message" aria-live="polite">Открывай по две карточки и ищи совпадения. Удачи! ♡</p><button class="btn btn-ghost game-reset" id="reset-game" type="button">Перемешать ↻</button></div>
+        <div class="game-win" id="game-win" hidden><span>ВСЕ СОВПАДЕНИЯ НАЙДЕНЫ · ♥</span><h3>У тебя получилось!</h3><p>Все шесть пар на месте. А вот и маленький приз: виртуальное объятие, которое не зависит от расстояний.</p><button class="btn btn-primary" id="win-heart" type="button">Забрать объятие <span>♡</span></button></div>
       </div>
     </section>
 
     <section class="reasons-section" id="reasons">
       <div class="wrap section">
-        <div class="section-head centered"><p class="eyebrow">03 / МАЛЕНЬКАЯ БАНКА</p><h2>Причины, почему<br><em>ты особенная.</em></h2><p>Нажми на банку — достань одну записку. Можно открывать снова и снова.</p></div>
+        <div class="section-head centered"><p class="eyebrow">03 / БАНКА МАЛЕНЬКИХ ПРИЯТНОСТЕЙ</p><h2>Причины, почему<br><em>ты особенная.</em></h2><p>Нажми на банку — достань одну записку. Можно открывать снова и снова.</p></div>
         <div class="jar-area">
           <div class="jar-glow"></div>
           <button class="jar" id="draw-reason" type="button" aria-label="Достать новую записку">
             <span class="jar-lid"></span><span class="jar-neck"></span><span class="jar-body"><i>♡</i><i>✦</i><i>♥</i><i>✧</i><i>♡</i><i>♥</i><i>✦</i></span>
           </button>
-          <div class="reason-slip" id="reason-slip" aria-live="polite"><span>НАЖМИ НА БАНКУ</span><b>Тут спрятано<br>кое-что хорошее</b><small>♡ одна записка за раз ♡</small></div>
+          <div class="reason-slip" id="reason-slip" aria-live="polite"><span>ОТКРОЙ БАНКУ</span><b>Тут спрятано<br>кое-что хорошее</b><small>♡ одна записка за раз ♡</small></div>
         </div>
         <p class="center-hint">Каждая записка — маленькое напоминание. Не забудь нажать ещё раз.</p>
       </div>
     </section>
 
     <section class="section wrap" id="date">
-      <div class="section-head"><p class="eyebrow">04 / СВИДАНИЕ НА РАССТОЯНИИ</p><h2>Давай устроим<br><em>вечер вдвоём?</em></h2><p>Даже если мы сейчас в разных странах, можно провести время вместе. Выбери свой вариант онлайн-свидания.</p></div>
+      <div class="section-head"><p class="eyebrow">04 / ИДЕЯ ДЛЯ НАШЕГО ВЕЧЕРА</p><h2>Придумаем<br><em>наш общий вечер?</em></h2><p>Выбирай то, что тебе нравится. Я подстроюсь — главное, чтобы нам обоим было уютно.</p></div>
       <div class="date-builder">
-        <div class="choice-group"><h3><span>01</span> Чем займёмся?</h3><div class="choice-row" data-choice="activity"><button class="choice active" data-value="посмотрим один и тот же фильм одновременно 🎬">🎬 Фильм синхронно</button><button class="choice" data-value="созвонимся и проговорим хоть весь вечер ☎️">☎️ Долгий созвон</button><button class="choice" data-value="включим одну музыку и поделимся любимыми треками 🎧">🎧 Общий плейлист</button></div></div>
-        <div class="choice-group"><h3><span>02</span> Что приготовим каждый у себя?</h3><div class="choice-row" data-choice="snack"><button class="choice active" data-value="чем-нибудь вкусным 🍓">🍓 Вкусняшки</button><button class="choice" data-value="своей любимой пиццей 🍕">🍕 Пицца</button><button class="choice" data-value="чаем и чем-нибудь сладким ☕">☕ Чай и сладкое</button></div></div>
-        <div class="choice-group"><h3><span>03</span> Какое настроение?</h3><div class="choice-row" data-choice="vibe"><button class="choice active" data-value="уютно и спокойно 🕯️">🕯️ Уютно</button><button class="choice" data-value="смешно и спонтанно 🤭">🤭 Весело</button><button class="choice" data-value="как в маленьком фильме ✨">✨ Как в кино</button></div></div>
-        <button class="btn btn-primary build-btn" id="build-date" type="button">Собрать наш вечер <span>♡</span></button>
-        <div class="date-result" id="date-result" aria-live="polite" hidden><span class="reveal-label">ТВОЙ ПЛАН ГОТОВ</span><p id="date-plan"></p><small>Каждый у себя, но вечер — общий. Даже если у нас разные часовые пояса. ♡</small></div>
+        <div class="choice-group"><h3><span>01</span> Чем займёмся?</h3><div class="choice-row" data-choice="activity"><button class="choice active" data-value="выберем фильм и включим его одновременно 🎬">🎬 Посмотрим фильм вместе</button><button class="choice" data-value="созвонимся и будем болтать сколько захочется ☎️">☎️ Видеозвонок</button><button class="choice" data-value="включим любимые песни и поделимся ими 🎧">🎧 Музыкальный вечер</button></div></div>
+        <div class="choice-group"><h3><span>02</span> Что будет под рукой?</h3><div class="choice-row" data-choice="snack"><button class="choice active" data-value="чем-нибудь вкусным 🍓">🍓 Вкусняшки</button><button class="choice" data-value="пиццу 🍕">🍕 Пицца</button><button class="choice" data-value="чай и что-нибудь сладкое ☕">☕ Чай и сладкое</button></div></div>
+        <div class="choice-group"><h3><span>03</span> Какую атмосферу выберем?</h3><div class="choice-row" data-choice="vibe"><button class="choice active" data-value="уютной и спокойной 🕯️">🕯️ Уютно</button><button class="choice" data-value="лёгкой и весёлой 🤭">🤭 Весело</button><button class="choice" data-value="как в маленьком фильме ✨">✨ Как в кино</button></div></div>
+        <button class="btn btn-primary build-btn" id="build-date" type="button">Собрать план вечера <span>♡</span></button>
+        <div class="date-result" id="date-result" aria-live="polite" hidden><span class="reveal-label">ТВОЙ ПЛАН ГОТОВ</span><p id="date-plan"></p><small>Осталось только выбрать удобное для нас обоих время. ♡</small><button class="copy-invite" id="copy-invite" type="button">Скопировать приглашение ↗</button></div>
       </div>
     </section>
 
@@ -134,6 +157,7 @@
   <footer class="footer"><span>little love project <b>♥</b></span><span>сделано с теплом · и немного с кодом</span><a href="#top">НАВЕРХ ↑</a></footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
   <div class="floating-hearts" id="floating-hearts" aria-hidden="true"></div>
 </body>
 </html>

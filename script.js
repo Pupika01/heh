@@ -1,46 +1,175 @@
+'use strict';
+
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-// Mobile navigation
-const menuButton = $('#menu-btn');
-const nav = $('#nav');
-menuButton.addEventListener('click', () => {
-  const open = nav.classList.toggle('open');
-  menuButton.setAttribute('aria-expanded', String(open));
-  menuButton.textContent = open ? '×' : '☰';
-});
-$$('#nav a').forEach(link => link.addEventListener('click', () => {
-  nav.classList.remove('open');
-  menuButton.setAttribute('aria-expanded', 'false');
-  menuButton.textContent = '☰';
-}));
+// The playful welcome screen.
+(() => {
+  const intro = $('#intro-screen');
+  const card = $('#intro-card');
+  const zone = $('#answer-zone');
+  const yes = $('#answer-yes');
+  const no = $('#answer-no');
+  const hint = $('#intro-hint');
+  const site = $('#site-shell');
+  if (!intro || !zone || !yes || !no || !site) return;
 
-// Small status toast
+  const teasingLines = [
+    'Хмм… кнопка что-то подозревает 😏',
+    'Не-не, этот вариант сегодня не работает ♡',
+    'Кажется, «нет» немного испугалось!',
+    'Попробуй ещё раз. Хотя ответ я знаю 😌',
+    'Она убегает, потому что знает правду 💗',
+    'Ладно, я понял: ты просто проверяешь мою реакцию 😄'
+  ];
+  let attempts = 0;
+  let opened = false;
+
+  function positionNoInitially() {
+    const zoneWidth = zone.clientWidth;
+    const yesWidth = yes.getBoundingClientRect().width;
+    const noWidth = no.getBoundingClientRect().width;
+    yes.style.left = '4px';
+    yes.style.top = '16px';
+    const firstLeft = Math.max(yesWidth + 18, zoneWidth - noWidth - 4);
+    no.style.left = `${Math.min(zoneWidth - noWidth, firstLeft)}px`;
+    no.style.top = '16px';
+  }
+
+  function dodgeNo() {
+    if (opened) return;
+    attempts += 1;
+    const zoneRect = zone.getBoundingClientRect();
+    const yesRect = yes.getBoundingClientRect();
+    const noWidth = no.offsetWidth;
+    const noHeight = no.offsetHeight;
+    const minX = Math.min(zone.clientWidth - noWidth, Math.max(0, yesRect.right - zoneRect.left + 14));
+    const maxX = Math.max(minX, zone.clientWidth - noWidth);
+    const maxY = Math.max(0, zone.clientHeight - noHeight - 4);
+    let nextX = minX + Math.random() * Math.max(0, maxX - minX);
+    let nextY = Math.random() * maxY;
+
+    // If the horizontal space is tight (small phones), the button also jumps vertically.
+    if (maxX - minX < 24) nextX = minX;
+    no.style.left = `${nextX}px`;
+    no.style.top = `${nextY}px`;
+    no.classList.remove('dodging');
+    void no.offsetWidth;
+    no.classList.add('dodging');
+    hint.textContent = teasingLines[Math.min(attempts - 1, teasingLines.length - 1)];
+    if (attempts >= 3) no.innerHTML = 'Не-а <span>💨</span>';
+    if (attempts >= 6) no.innerHTML = 'Мимо! <span>🙈</span>'; 
+  }
+
+  function celebrateWelcome() {
+    if (opened) return;
+    opened = true;
+    yes.disabled = true;
+    no.disabled = true;
+    hint.textContent = 'Я так и знал! Тогда начнём ♡';
+    burstHearts(34, window.innerWidth / 2, window.innerHeight * .58);
+    card.classList.add('welcome-accepted');
+    intro.classList.add('intro-leaving');
+    window.setTimeout(() => {
+      site.hidden = false;
+      document.body.classList.add('site-unlocked');
+      site.classList.add('site-entered');
+      initScrollReveals();
+      intro.remove();
+      window.scrollTo(0, 0);
+      burstHearts(20, window.innerWidth * .5, window.innerHeight * .78);
+    }, 650);
+  }
+
+  positionNoInitially();
+  window.addEventListener('resize', positionNoInitially, { passive: true });
+  no.addEventListener('pointerenter', event => {
+    if (event.pointerType !== 'touch') dodgeNo();
+  });
+  no.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'touch' || event.pointerType === 'pen') {
+      event.preventDefault();
+      dodgeNo();
+    }
+  });
+  no.addEventListener('click', event => {
+    event.preventDefault();
+    dodgeNo();
+  });
+  no.addEventListener('focus', dodgeNo);
+  yes.addEventListener('click', celebrateWelcome);
+})();
+
+// Toast messages.
 let toastTimer;
 function toast(message) {
   const el = $('#toast');
+  if (!el) return;
   el.textContent = message;
   el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2300);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
 }
 
-// Heart confetti
+// Heart confetti, used by the welcome screen and the interactive sections.
 function burstHearts(count = 12, originX = window.innerWidth / 2, originY = window.innerHeight * .78) {
   const layer = $('#floating-hearts');
+  if (!layer) return;
   for (let i = 0; i < count; i += 1) {
     const heart = document.createElement('span');
     heart.className = 'float-heart';
-    heart.textContent = Math.random() > .25 ? '♥' : '♡';
-    heart.style.left = `${Math.max(2, Math.min(96, (originX / window.innerWidth) * 100 + (Math.random() * 24 - 12)))}%`;
-    heart.style.bottom = `${Math.max(0, window.innerHeight - originY + Math.random() * 25)}px`;
-    heart.style.setProperty('--size', `${15 + Math.random() * 20}px`);
-    heart.style.setProperty('--dur', `${2.2 + Math.random() * 1.4}s`);
+    heart.textContent = Math.random() > .24 ? '♥' : '♡';
+    heart.style.left = `${Math.max(2, Math.min(96, (originX / window.innerWidth) * 100 + (Math.random() * 30 - 15)))}%`;
+    heart.style.bottom = `${Math.max(0, window.innerHeight - originY + Math.random() * 35)}px`;
+    heart.style.setProperty('--size', `${13 + Math.random() * 22}px`);
+    heart.style.setProperty('--dur', `${2.4 + Math.random() * 1.3}s`);
+    heart.style.setProperty('--drift', `${Math.random() * 130 - 65}px`);
     layer.appendChild(heart);
-    setTimeout(() => heart.remove(), 3900);
+    setTimeout(() => heart.remove(), 4100);
   }
 }
-$('#send-heart').addEventListener('click', (event) => {
+
+// Reveal content smoothly as it enters the viewport.
+function initScrollReveals() {
+  const targets = $$('.hero-copy, .hero-visual, .section-head, .mood-card, .memory-game, .jar-area, .date-builder, .letter-layout, .secret-card');
+  targets.forEach((item, index) => {
+    item.classList.add('reveal-item');
+    if (item.classList.contains('mood-card')) item.style.setProperty('--reveal-delay', `${(index % 4) * 75}ms`);
+  });
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    targets.forEach(item => item.classList.add('is-visible'));
+    return;
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -35px 0px' });
+  targets.forEach(item => observer.observe(item));
+}
+
+// Mobile navigation.
+const menuButton = $('#menu-btn');
+const nav = $('#nav');
+if (menuButton && nav) {
+  menuButton.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.textContent = open ? '×' : '☰';
+  });
+  $$('#nav a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.textContent = '☰';
+  }));
+}
+
+// Send a little burst of hearts.
+const sendHeart = $('#send-heart');
+if (sendHeart) sendHeart.addEventListener('click', event => {
   const rect = event.currentTarget.getBoundingClientRect();
   burstHearts(18, rect.left + rect.width / 2, rect.top + rect.height / 2);
   const status = $('#heart-status');
@@ -49,10 +178,10 @@ $('#send-heart').addEventListener('click', (event) => {
   status.textContent = sent === 1 ? 'Первое сердечко уже летит к тебе. ♥' : `Уже ${sent} сердечек — и это ещё не предел. ♥`;
 });
 
-// Mood selector with tailored short notes
+// Mood picker.
 const moodMessages = {
   tired: 'Тогда сегодня никаких подвигов. Выдохни, устройся поудобнее и помни: тебе не нужно заслуживать заботу. Ты достойна её просто так. ♡',
-  miss: 'Лови виртуальное объятие. Расстояние не отменяет того, что я думаю о тебе и хочу поскорее услышать, как прошёл твой день. ♥',
+  miss: 'Лови виртуальное объятие. Я думаю о тебе и хочу поскорее услышать, как прошёл твой день. ♥',
   happy: 'Вот это настроение надо беречь! Пусть хорошего сегодня станет ещё больше, а я постараюсь добавить к нему хотя бы одну улыбку. ☀️',
   chaos: 'Тогда официально разрешаю этому дню быть каким угодно. А моя задача — придумать что-нибудь приятное и немного неожиданное. ✨'
 };
@@ -64,7 +193,7 @@ $$('[data-mood]').forEach(button => button.addEventListener('click', () => {
   $('#mood-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }));
 
-// Jar of reasons. Prevent repeats until all messages are shown.
+// A jar of compliments, shuffled without immediate repeats.
 const reasons = [
   'Потому что у тебя особенная улыбка — та самая, которую хочется запоминать.',
   'Потому что с тобой даже обычный разговор может стать любимым моментом.',
@@ -80,12 +209,19 @@ const reasons = [
   'Потому что ты — это ты. И этого уже достаточно.'
 ];
 let reasonDeck = [];
-function refillReasons() {
-  reasonDeck = [...reasons].sort(() => Math.random() - .5);
+function shuffle(items) {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
 }
+function refillReasons() { reasonDeck = shuffle(reasons); }
 refillReasons();
 let lastReason = '';
-$('#draw-reason').addEventListener('click', () => {
+const drawReason = $('#draw-reason');
+if (drawReason) drawReason.addEventListener('click', () => {
   if (!reasonDeck.length) refillReasons();
   let next = reasonDeck.pop();
   if (next === lastReason && reasonDeck.length) next = reasonDeck.pop();
@@ -93,13 +229,24 @@ $('#draw-reason').addEventListener('click', () => {
   const slip = $('#reason-slip');
   slip.classList.remove('pop');
   void slip.offsetWidth;
-  slip.innerHTML = `<span>ЗАПИСКА ДЛЯ ТЕБЯ</span><b>${next}</b><small>♡ ещё одну?</small>`;
+  slip.replaceChildren();
+  const label = document.createElement('span');
+  label.textContent = 'ЗАПИСКА ДЛЯ ТЕБЯ';
+  const text = document.createElement('b');
+  text.textContent = next;
+  const foot = document.createElement('small');
+  foot.textContent = '♡ ещё одну?';
+  slip.append(label, text, foot);
   slip.classList.add('pop');
-  burstHearts(5, window.innerWidth * .52, window.innerHeight * .55);
+  burstHearts(7, window.innerWidth * .52, window.innerHeight * .55);
 });
 
-// Build a low-pressure date invitation from choices.
-const dateChoices = { activity: 'посмотрим один и тот же фильм одновременно 🎬', snack: 'чем-нибудь вкусным 🍓', vibe: 'уютно и спокойно 🕯️' };
+// Build an online date idea that works from two different places.
+const dateChoices = {
+  activity: 'выберем фильм и включим его одновременно 🎬',
+  snack: 'что-нибудь вкусное 🍓',
+  vibe: 'уютной и спокойной 🕯️'
+};
 $$('.choice-row').forEach(row => {
   $$('.choice', row).forEach(button => button.addEventListener('click', () => {
     $$('.choice', row).forEach(item => item.classList.remove('active'));
@@ -107,14 +254,26 @@ $$('.choice-row').forEach(row => {
     dateChoices[row.dataset.choice] = button.dataset.value;
   }));
 });
-$('#build-date').addEventListener('click', () => {
-  $('#date-plan').textContent = `${dateChoices.activity}, устроимся ${dateChoices.vibe}, а перекус будет ${dateChoices.snack}. Останется договориться о времени, когда нам обоим удобно — и получится наше маленькое онлайн-свидание. ♡`;
+const buildDate = $('#build-date');
+if (buildDate) buildDate.addEventListener('click', () => {
+  const plan = `Предлагаю: ${dateChoices.activity}. Каждый возьмёт ${dateChoices.snack}, а атмосферу сделаем ${dateChoices.vibe}. Осталось выбрать удобное для нас обоих время — и вечер наш. ♡`;
+  $('#date-plan').textContent = plan;
   $('#date-result').hidden = false;
   $('#date-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  burstHearts(8, window.innerWidth * .5, window.innerHeight * .72);
+  burstHearts(10, window.innerWidth * .5, window.innerHeight * .72);
+});
+const copyInvite = $('#copy-invite');
+if (copyInvite) copyInvite.addEventListener('click', async () => {
+  const text = $('#date-plan').textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    toast('Приглашение скопировано. Осталось отправить ♡');
+  } catch {
+    toast('План готов! Можешь скопировать его вручную ♡');
+  }
 });
 
-// Three hidden hearts. One in hero, one in the jar area, one in footer.
+// Three hidden hearts around the page.
 const heartLocations = [
   { selector: '.hero-visual', label: 'Первое сердце найдено!' },
   { selector: '.reasons-section .jar-area', label: 'Второе сердце! Осталось одно.' },
@@ -137,27 +296,28 @@ heartLocations.forEach((item, index) => {
     $('#heart-progress-fill').style.width = `${(foundHearts / 3) * 100}%`;
     $('#heart-progress-text').textContent = `${foundHearts} из 3 найдено`;
     toast(item.label);
-    burstHearts(12, window.innerWidth / 2, window.innerHeight * .55);
+    burstHearts(13, window.innerWidth / 2, window.innerHeight * .55);
     if (foundHearts === 3) {
       $('#secret-unlocked').hidden = false;
       $('#secret-unlocked').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      burstHearts(24, window.innerWidth / 2, window.innerHeight * .55);
     }
   });
   host.appendChild(button);
 });
 
-// Memory game: six pairs, with a little note attached to every matched pair.
+// Six-pair memory game. Every match reveals a tiny note.
 (() => {
   const grid = $('#memory-grid');
   if (!grid) return;
   const cards = $$('.memory-card', grid);
   const symbols = [
-    { id: 'star', icon: '✦', note: 'Даже на расстоянии можно делиться одним и тем же небом. ✨' },
-    { id: 'moon', icon: '☾', note: 'Пусть у нас разные окна и часовые пояса, но добрые мысли находят дорогу. 🌙' },
-    { id: 'heart', icon: '♥', note: 'Вот тебе напоминание: о тебе думают с теплом. ♥' },
+    { id: 'star', icon: '✦', note: 'Пусть у тебя сегодня случится что-нибудь по-настоящему хорошее. ✨' },
+    { id: 'moon', icon: '☾', note: 'Даже если за окном у нас разное небо, пожелание спокойной ночи одно и то же. 🌙' },
+    { id: 'heart', icon: '♥', note: 'Вот тебе маленькое напоминание: о тебе думают с теплом. ♥' },
     { id: 'comet', icon: '☄', note: 'Ты — моё любимое неожиданное событие. ☄' },
     { id: 'flower', icon: '✿', note: 'Пусть сегодня у тебя будет хотя бы одна причина улыбнуться. ✿' },
-    { id: 'spark', icon: '♡', note: 'Расстояние измеряется километрами, а внимание — маленькими поступками. ♡' }
+    { id: 'spark', icon: '♡', note: 'Самые приятные вещи часто прячутся в маленьких моментах. ♡' }
   ];
   let deck = [];
   let opened = [];
@@ -166,20 +326,10 @@ heartLocations.forEach((item, index) => {
   let locked = false;
   let mismatchTimer = null;
 
-  function shuffle(items) {
-    const result = [...items];
-    for (let i = result.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [result[i], result[j]] = [result[j], result[i]];
-    }
-    return result;
-  }
-
   function paintStats() {
     $('#moves-count').textContent = String(moves);
     $('#pairs-count').textContent = String(matched);
   }
-
   function reset() {
     clearTimeout(mismatchTimer);
     deck = shuffle(symbols.flatMap(item => [item, item]));
@@ -188,17 +338,15 @@ heartLocations.forEach((item, index) => {
     moves = 0;
     locked = false;
     $('#game-win').hidden = true;
-    $('#game-message').textContent = 'Подсказка: две одинаковые звёздочки — это пара. Начинай! ♡';
+    $('#game-message').textContent = 'Открывай по две карточки и ищи совпадения. Удачи! ♡';
     cards.forEach((card, index) => {
       card.className = 'memory-card';
       card.disabled = false;
-      card.dataset.pair = deck[index].id;
       $('.card-front', card).textContent = deck[index].icon;
       card.setAttribute('aria-label', `Закрытая карточка ${index + 1}`);
     });
     paintStats();
   }
-
   function selectCard(card) {
     if (locked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
     card.classList.add('flipped');
@@ -221,16 +369,16 @@ heartLocations.forEach((item, index) => {
       paintStats();
       $('#game-message').textContent = firstSymbol.note;
       opened = [];
-      burstHearts(5, window.innerWidth / 2, window.innerHeight * .62);
+      burstHearts(6, window.innerWidth / 2, window.innerHeight * .62);
       if (matched === symbols.length) {
-        $('#game-message').textContent = 'Все пары собраны — ты справилась! ♥';
+        $('#game-message').textContent = 'Все пары найдены — отлично справилась! ♥';
         $('#game-win').hidden = false;
         $('#game-win').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        burstHearts(22, window.innerWidth / 2, window.innerHeight * .6);
+        burstHearts(24, window.innerWidth / 2, window.innerHeight * .6);
       }
     } else {
       locked = true;
-      $('#game-message').textContent = 'Почти! Эти две не пара. Попробуй ещё раз. ♡';
+      $('#game-message').textContent = 'Почти! Эти две карточки не совпали. Попробуй ещё раз. ♡';
       mismatchTimer = setTimeout(() => {
         opened.forEach(item => {
           item.classList.remove('flipped');
@@ -238,15 +386,14 @@ heartLocations.forEach((item, index) => {
         });
         opened = [];
         locked = false;
-      }, 850);
+      }, 900);
     }
   }
-
   cards.forEach(card => card.addEventListener('click', () => selectCard(card)));
   $('#reset-game').addEventListener('click', reset);
   $('#win-heart').addEventListener('click', () => {
-    burstHearts(28, window.innerWidth / 2, window.innerHeight * .55);
-    toast('Объятие отправлено через весь мир. ♥');
+    burstHearts(30, window.innerWidth / 2, window.innerHeight * .55);
+    toast('Объятие отправлено. Доставка — мгновенная. ♥');
   });
   reset();
 })();
