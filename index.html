@@ -188,13 +188,21 @@
       <div class="cosmos-heading">
         <p class="cosmos-kicker"><span>✦</span> ТОЛЬКО ДЛЯ ТЕБЯ · ГЛАВА II <span>✦</span></p>
         <h2 id="cosmos-title">Там, где живут<br><em>наши звёзды.</em></h2>
-        <p>Я оставил для тебя семь маленьких звёзд. Найди их все — и посмотри, какое созвездие они сложат.</p>
+        <p>Семь звёзд спрятались в этом небе. Каждая появляется всего на три секунды — успей поймать их все и собрать наше созвездие.</p>
       </div>
       <div class="cosmos-progress-wrap">
         <div class="cosmos-progress-meta"><span id="star-progress-text">0 / 7 звёзд</span><span>СОБЕРИ СОЗВЕЗДИЕ</span></div>
         <div class="cosmos-progress"><span id="star-progress-fill"></span></div>
       </div>
-      <p class="cosmos-whisper" id="cosmos-whisper" aria-live="polite">Некоторые звёзды любят прятаться на виду ✧</p>
+      <div class="cosmos-round-row">
+        <span class="cosmos-round-chip"><i>✦</i><b id="star-round-label">РАУНД 01 / 07</b></span>
+        <span class="cosmos-attempts" id="star-attempts">Попыток: 0</span>
+      </div>
+      <div class="cosmos-timer" id="cosmos-timer" role="progressbar" aria-label="Время на поиск звезды" aria-valuemin="0" aria-valuemax="3000" aria-valuenow="3000">
+        <span class="cosmos-timer-fill" id="cosmos-timer-fill"></span>
+        <b class="cosmos-timer-label" id="cosmos-timer-label">3.0 сек</b>
+      </div>
+      <p class="cosmos-whisper" id="cosmos-whisper" aria-live="polite">Звезда появится всего на три секунды. Успей коснуться её ✧</p>
       <div class="cosmos-board" id="cosmos-board" aria-label="Игровое поле со спрятанными звёздами">
         <svg class="cosmos-constellation" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M160 250 L720 170 L470 400 L830 530 L240 690 L590 790 L910 340" /></svg>
       </div>

@@ -367,7 +367,7 @@ heartLocations.forEach((item) => {
   host.appendChild(button);
 });
 
-// The final secret: a small constellation hidden inside a full-screen night sky.
+// The final secret: a timed star-catching game inside a full-screen night sky.
 (() => {
   const overlay = $('#cosmos-overlay');
   const board = $('#cosmos-board');
@@ -377,35 +377,63 @@ heartLocations.forEach((item) => {
   const progressText = $('#star-progress-text');
   const whisper = $('#cosmos-whisper');
   const completeCard = $('#cosmos-complete');
+  const timer = $('#cosmos-timer');
+  const timerFill = $('#cosmos-timer-fill');
+  const timerLabel = $('#cosmos-timer-label');
+  const roundLabel = $('#star-round-label');
+  const attemptsLabel = $('#star-attempts');
   if (!overlay || !board || !startButton) return;
 
   const starPositions = [
     [16, 25], [72, 17], [47, 40], [83, 53], [24, 69], [59, 79], [91, 34]
   ];
   const starMessages = [
-    'Первая звезда зажглась. Красиво, правда? ✨',
-    'Вторая — будто стала ближе. ♥',
-    'Третья звезда уже находит своё место.',
-    'Половина неба уже светится для тебя. ✦',
-    'Ещё две — и мы увидим целое созвездие.',
-    'Осталась последняя звезда. Не торопись, она рядом.',
+    'Первая звезда поймана. Ты быстрее, чем кажется. ✨',
+    'Вторая! Небо понемногу складывается для тебя. ♥',
+    'Третья звезда уже заняла своё место.',
+    'Половина созвездия светится — продолжай. ✦',
+    'Ещё две звезды. Они будто специально ждут тебя.',
+    'Предпоследняя! Самая красивая уже близко.',
     'Все семь звёзд на месте. Посмотри, что получилось…'
   ];
+  const ROUND_MS = 3000;
+  const TOTAL = starPositions.length;
   let foundStars = 0;
+  let missedAttempts = 0;
+  let activeStar = null;
+  let activeStarIndex = -1;
+  let deadline = 0;
+  let timerFrame = 0;
+  let roundTimeout = 0;
+  let nextRoundTimeout = 0;
   let previousFocus = null;
   let isClosing = false;
+  let isComplete = false;
+  let order = shuffle(starPositions.map((_, index) => index));
+  const stars = [];
 
-  // Fine distant stars make the whole sky feel alive without obscuring the targets.
+  // Fine distant stars and a few softly glowing dust clouds make the sky feel deep.
   const starfield = $('#cosmos-starfield');
-  if (starfield) {
-    for (let index = 0; index < 96; index += 1) {
+  if (starfield && !starfield.childElementCount) {
+    for (let index = 0; index < 150; index += 1) {
       const speck = document.createElement('i');
       speck.className = 'cosmos-speck';
-      speck.style.left = `${(index * 37.17) % 100}%`;
+      speck.style.left = `${(index * 37.17 + 5) % 100}%`;
       speck.style.top = `${(index * 61.73 + 9) % 100}%`;
-      speck.style.setProperty('--speck-size', `${index % 11 === 0 ? 2.5 : index % 4 === 0 ? 1.8 : 1.15}px`);
-      speck.style.setProperty('--speck-delay', `${-(index % 23) * .19}s`);
+      speck.style.setProperty('--speck-size', `${index % 17 === 0 ? 3 : index % 5 === 0 ? 1.9 : 1.15}px`);
+      speck.style.setProperty('--speck-delay', `${-(index % 29) * .17}s`);
+      speck.style.setProperty('--speck-opacity', `${.28 + (index % 5) * .11}`);
       starfield.appendChild(speck);
+    }
+
+    // Very subtle shooting stars, independent of the clickable targets.
+    for (let index = 0; index < 4; index += 1) {
+      const streak = document.createElement('i');
+      streak.className = 'cosmos-shooting-star';
+      streak.style.top = `${12 + index * 19}%`;
+      streak.style.left = `${12 + index * 21}%`;
+      streak.style.setProperty('--shoot-delay', `${index * -4.7 - 2}s`);
+      starfield.appendChild(streak);
     }
   }
 
@@ -413,46 +441,184 @@ heartLocations.forEach((item) => {
     const star = document.createElement('button');
     star.type = 'button';
     star.className = 'cosmic-star';
+    star.hidden = true;
+    star.disabled = true;
     star.style.left = `${x}%`;
     star.style.top = `${y}%`;
     star.style.setProperty('--star-delay', `${-(index * .63)}s`);
-    star.setAttribute('aria-label', `Найти звезду ${index + 1}`);
-    star.innerHTML = '<span class="cosmic-star-glyph" aria-hidden="true">✦</span><span class="cosmic-star-core" aria-hidden="true"></span>';
-    star.addEventListener('click', () => {
-      if (star.classList.contains('found')) return;
-      star.classList.add('found');
-      star.disabled = true;
-      foundStars += 1;
-      progressFill.style.width = `${(foundStars / starPositions.length) * 100}%`;
-      progressText.textContent = `${foundStars} / ${starPositions.length} звёзд`;
-      whisper.textContent = starMessages[foundStars - 1];
-      star.setAttribute('aria-label', `Звезда найдена. ${foundStars} из ${starPositions.length}`);
-      if (foundStars === starPositions.length) {
-        overlay.classList.add('constellation-found');
-        whisper.textContent = 'Смотри… они сложились в наше созвездие. ♥';
-        window.setTimeout(() => {
-          completeCard.hidden = false;
-          overlay.classList.add('cosmos-completed');
-        }, 850);
-      }
-    });
+    star.setAttribute('aria-label', `Целевая звезда ${index + 1}`);
+    star.innerHTML = '<span class="cosmic-star-halo" aria-hidden="true"></span><span class="cosmic-star-glyph" aria-hidden="true">✦</span><span class="cosmic-star-core" aria-hidden="true"></span><span class="cosmic-star-label" aria-hidden="true">ПОЙМАЙ</span>';
+    star.addEventListener('click', () => catchStar(star, index));
+    stars.push(star);
     board.appendChild(star);
   });
 
-  function openCosmos() {
-    if (overlay.hidden) {
-      previousFocus = document.activeElement;
-      overlay.hidden = false;
-      overlay.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('cosmos-open');
-      requestAnimationFrame(() => overlay.classList.add('is-open'));
-      window.setTimeout(() => closeButton?.focus(), 120);
+  function clearRoundTimers() {
+    window.clearTimeout(roundTimeout);
+    window.clearTimeout(nextRoundTimeout);
+    if (timerFrame) window.cancelAnimationFrame(timerFrame);
+    timerFrame = 0;
+    roundTimeout = 0;
+    nextRoundTimeout = 0;
+  }
+
+  function setTimerVisual(ratio, remaining) {
+    const clamped = Math.max(0, Math.min(1, ratio));
+    if (timerFill) timerFill.style.transform = `scaleX(${clamped})`;
+    if (timerLabel) timerLabel.textContent = `${Math.max(0, remaining / 1000).toFixed(1)} сек`;
+    if (timer) timer.setAttribute('aria-valuenow', String(Math.max(0, Math.round(remaining))));
+    if (timer) timer.classList.toggle('is-urgent', remaining <= 1050);
+  }
+
+  function animateTimer() {
+    const update = () => {
+      if (!activeStar || overlay.hidden) return;
+      const remaining = Math.max(0, deadline - performance.now());
+      setTimerVisual(remaining / ROUND_MS, remaining);
+      if (remaining > 0) timerFrame = window.requestAnimationFrame(update);
+    };
+    if (timerFrame) window.cancelAnimationFrame(timerFrame);
+    update();
+  }
+
+  function showTarget(star, index) {
+    activeStar = star;
+    activeStarIndex = index;
+    const [baseX, baseY] = starPositions[index];
+    const jitterX = (Math.random() - .5) * 12;
+    const jitterY = (Math.random() - .5) * 10;
+    const x = Math.max(9, Math.min(91, baseX + jitterX));
+    const y = Math.max(13, Math.min(87, baseY + jitterY));
+    star.style.left = `${x}%`;
+    star.style.top = `${y}%`;
+    star.hidden = false;
+    star.disabled = false;
+    star.classList.remove('missed', 'found');
+    star.classList.add('is-target');
+    star.setAttribute('aria-label', 'Поймать звезду — осталось три секунды');
+    board.classList.add('has-active-target');
+    if (roundLabel) roundLabel.textContent = `ЗВЕЗДА ${String(foundStars + 1).padStart(2, '0')} / ${String(TOTAL).padStart(2, '0')}`;
+    if (timerLabel) timerLabel.textContent = '3.0 сек';
+    setTimerVisual(1, ROUND_MS);
+    deadline = performance.now() + ROUND_MS;
+    animateTimer();
+    roundTimeout = window.setTimeout(onTimeout, ROUND_MS);
+  }
+
+  function startRound() {
+    if (overlay.hidden || isComplete || foundStars >= TOTAL) return;
+    clearRoundTimers();
+    stars.forEach(star => {
+      if (!star.classList.contains('found')) {
+        star.hidden = true;
+        star.disabled = true;
+        star.classList.remove('is-target', 'missed');
+      }
+    });
+    const index = order[foundStars];
+    const star = stars[index];
+    if (!star) return;
+    showTarget(star, index);
+    whisper.textContent = foundStars === 0
+      ? 'Лови звезду! Она исчезнет через три секунды. ✧'
+      : 'Следующая звезда уже здесь — успей коснуться её. ✦';
+  }
+
+  function onTimeout() {
+    if (!activeStar || overlay.hidden || isComplete) return;
+    if (timerFrame) window.cancelAnimationFrame(timerFrame);
+    timerFrame = 0;
+    setTimerVisual(0, 0);
+    activeStar.classList.remove('is-target');
+    activeStar.classList.add('missed');
+    activeStar.disabled = true;
+    missedAttempts += 1;
+    if (attemptsLabel) attemptsLabel.textContent = `Попыток: ${missedAttempts}`;
+    whisper.textContent = 'Она ускользнула… ничего страшного, попробуем ещё раз. ♥';
+    activeStar = null;
+    board.classList.remove('has-active-target');
+    nextRoundTimeout = window.setTimeout(() => {
+      if (!overlay.hidden && !isComplete) startRound();
+    }, 700);
+  }
+
+  function createHitBurst(star) {
+    const burst = document.createElement('span');
+    burst.className = 'cosmos-hit-burst';
+    burst.style.left = star.style.left;
+    burst.style.top = star.style.top;
+    board.appendChild(burst);
+    window.setTimeout(() => burst.remove(), 900);
+  }
+
+  function catchStar(star, index) {
+    if (star !== activeStar || index !== activeStarIndex || star.disabled || star.hidden || isComplete) return;
+    if (performance.now() > deadline) {
+      onTimeout();
+      return;
     }
+    clearRoundTimers();
+    createHitBurst(star);
+    star.classList.remove('is-target', 'missed');
+    star.classList.add('found');
+    star.disabled = true;
+    star.hidden = false;
+    // Return each caught star to its constellation anchor before the lines appear.
+    star.style.left = `${starPositions[index][0]}%`;
+    star.style.top = `${starPositions[index][1]}%`;
+    star.setAttribute('aria-label', `Звезда найдена. ${foundStars + 1} из ${TOTAL}`);
+    activeStar = null;
+    activeStarIndex = -1;
+    board.classList.remove('has-active-target');
+    foundStars += 1;
+    if (progressFill) progressFill.style.width = `${(foundStars / TOTAL) * 100}%`;
+    if (progressText) progressText.textContent = `${foundStars} / ${TOTAL} звёзд`;
+    if (attemptsLabel) attemptsLabel.textContent = `Попыток: ${missedAttempts}`;
+    if (roundLabel) roundLabel.textContent = foundStars === TOTAL ? 'СОЗВЕЗДИЕ СОБРАНО' : `ЗВЕЗДА ${String(foundStars + 1).padStart(2, '0')} / ${String(TOTAL).padStart(2, '0')}`;
+    if (timerLabel) timerLabel.textContent = 'ПОЙМАНА ✦';
+    if (timerFill) timerFill.style.transform = 'scaleX(0)';
+    if (timer) timer.classList.remove('is-urgent');
+    whisper.textContent = starMessages[foundStars - 1];
+
+    if (foundStars === TOTAL) {
+      isComplete = true;
+      overlay.classList.add('constellation-found');
+      board.classList.add('is-complete');
+      whisper.textContent = 'Смотри… семь мгновений сложились в наше созвездие. ♥';
+      window.setTimeout(() => {
+        if (completeCard) completeCard.hidden = false;
+        overlay.classList.add('cosmos-completed');
+      }, 1050);
+    } else {
+      nextRoundTimeout = window.setTimeout(startRound, 620);
+    }
+  }
+
+  function openCosmos() {
+    if (!overlay.hidden || isClosing) return;
+    previousFocus = document.activeElement;
+    overlay.hidden = false;
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('cosmos-open');
+    requestAnimationFrame(() => {
+      overlay.classList.add('is-open');
+      if (!isComplete && !activeStar) startRound();
+    });
+    window.setTimeout(() => closeButton?.focus(), 120);
   }
 
   function closeCosmos() {
     if (overlay.hidden || isClosing) return;
     isClosing = true;
+    clearRoundTimers();
+    if (activeStar) {
+      activeStar.hidden = true;
+      activeStar.disabled = true;
+      activeStar.classList.remove('is-target', 'missed');
+      activeStar = null;
+      activeStarIndex = -1;
+      board.classList.remove('has-active-target');
+    }
     overlay.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('cosmos-open');
