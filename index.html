@@ -42,6 +42,7 @@
   <header class="topbar">
     <a class="brand" href="#top" aria-label="На главную"><span>♥</span> little love project</a>
     <nav class="nav" id="nav">
+      <a href="#soundtrack">Музыка</a>
       <a href="#mood">Настроение</a>
       <a href="#game">Мини-игра</a>
       <a href="#reasons">Причины</a>
@@ -59,6 +60,7 @@
         <div class="hero-actions">
           <a class="btn btn-primary" href="#mood">Начать приключение <span>↗</span></a>
           <button class="btn btn-ghost" id="send-heart" type="button">Отправить сердечко <span>♡</span></button>
+          <button class="btn btn-music" id="music-open" type="button"><span class="music-note-icon">♫</span> Включить саундтрек</button>
         </div>
         <p class="tiny-note" id="heart-status" aria-live="polite">P.S. это сердечко уже у тебя ♡</p>
       </div>
@@ -71,6 +73,39 @@
         <span class="visual-caption">маленькая вещь · большие чувства</span>
       </div>
       <a class="scroll-hint" href="#mood"><span></span> ЛИСТАЙ НИЖЕ</a>
+    </section>
+
+    <section class="music-section wrap" id="soundtrack" aria-labelledby="music-title">
+      <div class="music-card" id="music-card">
+        <div class="music-art">
+          <span class="music-orbit music-orbit-one" aria-hidden="true">✦</span>
+          <span class="music-orbit music-orbit-two" aria-hidden="true">♫</span>
+          <button class="vinyl-disc" id="vinyl-button" type="button" aria-label="Открыть маленькую музыкальную записку" aria-pressed="false">
+            <span class="vinyl-grooves" aria-hidden="true"></span>
+            <span class="vinyl-label"><b>AM</b><small>SIDE A · ♡</small></span>
+          </button>
+          <span class="music-art-caption">PLAY IT WHEN YOU MISS ME</span>
+        </div>
+        <div class="music-copy">
+          <p class="music-eyebrow">МАЛЕНЬКАЯ МУЗЫКАЛЬНАЯ ПАУЗА <span>✦</span></p>
+          <h2 id="music-title">Одна песня,<br><em>чтобы быть ближе.</em></h2>
+          <p class="music-description">Ты любишь Arctic Monkeys — поэтому я оставил здесь три трека. Выбери тот, который сейчас подходит под настроение.</p>
+          <div class="track-tabs" role="group" aria-label="Выбрать песню Arctic Monkeys">
+            <button class="track-tab active" type="button" data-track="iwy" aria-pressed="true">I Wanna Be Yours</button>
+            <button class="track-tab" type="button" data-track="505" aria-pressed="false">505</button>
+            <button class="track-tab" type="button" data-track="anthem" aria-pressed="false">No. 1 Party Anthem</button>
+          </div>
+          <div class="music-player-wrap" id="music-player-wrap" hidden>
+            <iframe id="spotify-player" title="Плеер Arctic Monkeys в Spotify" width="100%" height="152" style="border:0;border-radius:13px" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <a class="spotify-fallback" id="spotify-fallback" href="https://open.spotify.com/track/7a8GawTVgHZvBLQOh46he7" target="_blank" rel="noopener noreferrer">Открыть эту песню в Spotify ↗</a>
+          </div>
+          <div class="music-actions">
+            <button class="btn btn-music-play" id="music-toggle" type="button" aria-expanded="false">Открыть плеер <span>♫</span></button>
+            <p class="music-hint" id="music-hint">Музыка не включается сама — нажми Play в плеере, когда захочется. ♡</p>
+          </div>
+          <p class="music-easter" id="music-easter" hidden>Маленькая идея: выбери песню и нажми Play одновременно со мной. У нас будет один саундтрек на две страны. ♡</p>
+        </div>
+      </div>
     </section>
 
     <section class="section wrap" id="mood">

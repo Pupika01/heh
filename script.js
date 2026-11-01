@@ -131,7 +131,7 @@ function burstHearts(count = 12, originX = window.innerWidth / 2, originY = wind
 
 // Reveal content smoothly as it enters the viewport.
 function initScrollReveals() {
-  const targets = $$('.hero-copy, .hero-visual, .section-head, .mood-card, .memory-game, .jar-area, .date-builder, .letter-layout, .secret-card');
+  const targets = $$('.hero-copy, .hero-visual, .section-head, .music-card, .mood-card, .memory-game, .jar-area, .date-builder, .letter-layout, .secret-card');
   targets.forEach((item, index) => {
     item.classList.add('reveal-item');
     if (item.classList.contains('mood-card')) item.style.setProperty('--reveal-delay', `${(index % 4) * 75}ms`);
@@ -166,6 +166,94 @@ if (menuButton && nav) {
     menuButton.textContent = '☰';
   }));
 }
+
+// The soundtrack uses Spotify's official embedded player. Audio only starts
+// after the visitor presses Play inside the provider player.
+(() => {
+  const card = $('#music-card');
+  const openButton = $('#music-open');
+  const toggleButton = $('#music-toggle');
+  const playerWrap = $('#music-player-wrap');
+  const player = $('#spotify-player');
+  const fallback = $('#spotify-fallback');
+  const vinyl = $('#vinyl-button');
+  const easterEgg = $('#music-easter');
+  if (!card || !toggleButton || !playerWrap || !player) return;
+
+  const tracks = {
+    iwy: {
+      title: 'I Wanna Be Yours',
+      id: '7a8GawTVgHZvBLQOh46he7',
+      url: 'https://open.spotify.com/track/7a8GawTVgHZvBLQOh46he7'
+    },
+    '505': {
+      title: '505',
+      id: '0BxE4FqsDD1Ot4YuBXwAPp',
+      url: 'https://open.spotify.com/track/0BxE4FqsDD1Ot4YuBXwAPp'
+    },
+    anthem: {
+      title: 'No. 1 Party Anthem',
+      id: '5TTGoX70AFrTvuEtqHK37S',
+      url: 'https://open.spotify.com/track/5TTGoX70AFrTvuEtqHK37S'
+    }
+  };
+  let selected = 'iwy';
+  let opened = false;
+
+  function loadSelectedTrack() {
+    const track = tracks[selected];
+    player.src = `https://open.spotify.com/embed/track/${track.id}?utm_source=generator&theme=0`;
+    player.title = `${track.title} — Arctic Monkeys · Spotify`;
+    fallback.href = track.url;
+    fallback.textContent = `Открыть «${track.title}» в Spotify ↗`;
+  }
+
+  function showPlayer(scroll = false) {
+    opened = true;
+    card.classList.add('is-open');
+    playerWrap.hidden = false;
+    toggleButton.setAttribute('aria-expanded', 'true');
+    toggleButton.innerHTML = 'Спрятать плеер <span>×</span>';
+    loadSelectedTrack();
+    $('#music-hint').textContent = 'Нажми Play прямо в плеере — и пусть эта песня будет вашим общим моментом. ♡';
+    if (scroll) {
+      $('#soundtrack').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function hidePlayer() {
+    opened = false;
+    card.classList.remove('is-open');
+    playerWrap.hidden = true;
+    player.src = '';
+    toggleButton.setAttribute('aria-expanded', 'false');
+    toggleButton.innerHTML = 'Открыть плеер <span>♫</span>';
+    $('#music-hint').textContent = 'Музыка не включается сама — нажми Play в плеере, когда захочется. ♡';
+  }
+
+  $$('.track-tab').forEach(button => button.addEventListener('click', () => {
+    selected = button.dataset.track;
+    $$('.track-tab').forEach(tab => {
+      const active = tab === button;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-pressed', String(active));
+    });
+    if (opened) loadSelectedTrack();
+    else $('#music-hint').textContent = `Выбрано: ${tracks[selected].title}. Нажми «Открыть плеер», чтобы послушать. ♡`;
+  }));
+
+  toggleButton.addEventListener('click', () => opened ? hidePlayer() : showPlayer());
+  openButton?.addEventListener('click', () => showPlayer(true));
+  vinyl?.addEventListener('click', () => {
+    const visible = !easterEgg.hidden;
+    easterEgg.hidden = visible;
+    vinyl.setAttribute('aria-pressed', String(!visible));
+    if (!visible) {
+      burstHearts(12, window.innerWidth * .26, window.innerHeight * .48);
+      toast('Маленькая музыкальная договорённость для вас двоих ♡');
+    }
+  });
+})();
 
 // Send a little burst of hearts.
 const sendHeart = $('#send-heart');
