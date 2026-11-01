@@ -1280,3 +1280,232 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(196, 113, 139, .
 @media (prefers-reduced-motion: reduce) {
   .cosmos-intro, .cosmos-intro-emblem span, .cosmos-complete { animation: none !important; }
 }
+
+/* ── Grand finale: her seven stars become a little universe of their own ── */
+.cosmos-overlay.cosmos-completed .cosmos-content {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity .85s ease, visibility .85s ease;
+}
+.cosmos-overlay.cosmos-completed .cosmos-nebula-one { opacity: .34; }
+.cosmos-overlay.cosmos-completed .cosmos-nebula-two { opacity: .32; }
+.cosmos-overlay.cosmos-completed .cosmos-nebula-three { opacity: .28; }
+.cosmos-overlay.cosmos-completed::after { border-color: rgba(246,224,237,.2); box-shadow: inset 0 0 130px rgba(194,151,255,.09), 0 0 60px rgba(178,147,255,.08); }
+.cosmos-complete {
+  z-index: 18;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(120,91,174,.19), transparent 53%),
+    linear-gradient(180deg, rgba(4,7,22,.15), rgba(4,6,18,.48));
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  animation: cosmos-victory-arrive 1.15s cubic-bezier(.16,.8,.2,1) both;
+}
+.cosmos-prize-ticket {
+  width: min(100%, 790px);
+  max-height: min(94svh, 1000px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: clamp(22px,3.5vh,38px) clamp(22px,5.8vw,66px) clamp(22px,3.4vh,34px);
+  border: 1px solid rgba(236,224,255,.27);
+  border-radius: 34px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(157,124,205,.22), transparent 48%),
+    linear-gradient(155deg, rgba(14,20,48,.88), rgba(23,17,48,.91) 58%, rgba(49,28,63,.88));
+  box-shadow:
+    0 38px 140px rgba(0,0,0,.52),
+    0 0 0 1px rgba(255,255,255,.035),
+    0 0 0 9px rgba(205,184,255,.035),
+    0 0 100px rgba(155,127,230,.17),
+    inset 0 1px 0 rgba(255,255,255,.17);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(205,190,255,.25) transparent;
+}
+.cosmos-prize-ticket::before,
+.cosmos-prize-ticket::after { content: none; }
+.cosmos-victory-art {
+  position: relative;
+  width: min(100%, 570px);
+  height: clamp(158px, 22vh, 218px);
+  margin: -2px auto 4px;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 9%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 9%, #000 88%, transparent 100%);
+}
+.cosmos-victory-art::before,
+.cosmos-victory-art::after {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  width: 82%;
+  aspect-ratio: 1.8;
+  border-radius: 50%;
+  filter: blur(24px);
+  background: radial-gradient(ellipse, rgba(166,131,228,.27), rgba(205,137,175,.09) 48%, transparent 72%);
+  animation: victory-nebula-breathe 7s ease-in-out infinite alternate;
+}
+.cosmos-victory-art::after {
+  width: 53%;
+  background: radial-gradient(ellipse, rgba(255,213,185,.19), rgba(162,155,255,.11) 50%, transparent 73%);
+  animation-delay: -3s;
+}
+.cosmos-victory-art-label {
+  position: absolute;
+  top: 5px;
+  z-index: 4;
+  color: rgba(224,211,248,.48);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .36em;
+}
+.cosmos-victory-planet {
+  position: relative;
+  z-index: 2;
+  width: clamp(86px, 12vh, 116px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff1e6;
+  background:
+    radial-gradient(circle at 34% 27%, rgba(255,244,227,.98) 0 1.5%, transparent 5%),
+    radial-gradient(circle at 34% 30%, #f6d8d7 0%, #d39fc7 21%, #8c77bd 48%, #46568b 72%, #1c315a 100%);
+  box-shadow:
+    inset -15px -13px 28px rgba(4,9,29,.62),
+    inset 8px 7px 19px rgba(255,244,233,.26),
+    0 0 30px rgba(190,159,255,.35),
+    0 0 85px rgba(183,130,211,.31),
+    0 0 145px rgba(125,135,224,.17);
+  animation: victory-planet-float 6s ease-in-out infinite;
+}
+.cosmos-victory-planet::before {
+  content: '';
+  position: absolute;
+  inset: 9%;
+  border: 1px solid rgba(255,238,228,.24);
+  border-radius: 50%;
+  box-shadow: inset 0 0 20px rgba(255,233,223,.14);
+}
+.cosmos-victory-planet::after {
+  content: '';
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 52%, rgba(245,208,226,.15) 57%, transparent 69%);
+  filter: blur(4px);
+}
+.cosmos-victory-planet b {
+  position: relative;
+  z-index: 3;
+  color: #fff0e9;
+  font-size: clamp(23px, 3.7vh, 34px);
+  font-weight: 400;
+  text-shadow: 0 0 12px #fff, 0 0 30px rgba(255,220,227,.95), 0 0 50px rgba(245,181,212,.7);
+  animation: victory-heart-pulse 2.9s ease-in-out infinite;
+}
+.cosmos-victory-planet-glow {
+  position: absolute;
+  inset: -23%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(237,194,234,.24), transparent 66%);
+  filter: blur(12px);
+}
+.cosmos-victory-orbit {
+  position: absolute;
+  z-index: 1;
+  width: min(67%, 390px);
+  height: 39%;
+  border: 1px solid rgba(226,208,255,.47);
+  border-radius: 50%;
+  transform: rotate(-18deg) scaleY(.55);
+  box-shadow: 0 0 13px rgba(205,180,255,.12), inset 0 0 11px rgba(205,180,255,.06);
+}
+.cosmos-victory-orbit-one { border-color: rgba(247,211,208,.66); transform: rotate(-19deg) scaleY(.58); animation: victory-orbit-one 18s linear infinite; }
+.cosmos-victory-orbit-two { width: min(78%, 450px); height: 55%; border-color: rgba(183,183,255,.35); transform: rotate(27deg) scaleY(.42); animation: victory-orbit-two 24s linear infinite; }
+.cosmos-victory-orbit-three { width: min(52%, 300px); height: 73%; border-color: rgba(255,231,213,.2); transform: rotate(76deg) scaleY(.37); }
+.cosmos-victory-moon {
+  position: absolute;
+  z-index: 3;
+  top: 22%;
+  right: 25%;
+  color: #ffe8cc;
+  font-size: 23px;
+  text-shadow: 0 0 17px rgba(255,224,184,.92);
+  animation: victory-moon-drift 5.8s ease-in-out infinite;
+}
+.cosmos-victory-spark { position: absolute; z-index: 3; color: #fff0d8; font-style: normal; text-shadow: 0 0 8px #fff, 0 0 20px rgba(255,210,229,.9); animation: victory-sparkle 2.7s ease-in-out infinite alternate; }
+.cosmos-victory-spark.spark-a { top: 25%; left: 20%; font-size: 19px; }
+.cosmos-victory-spark.spark-b { top: 28%; right: 17%; color: #d9d0ff; font-size: 17px; animation-delay: -1.4s; }
+.cosmos-victory-spark.spark-c { bottom: 19%; left: 29%; font-size: 12px; animation-delay: -.8s; }
+.cosmos-victory-spark.spark-d { bottom: 23%; right: 27%; color: #ffd9df; font-size: 15px; animation-delay: -2s; }
+.cosmos-victory-spark.spark-e { top: 48%; left: 11%; color: #d4d7ff; font-size: 11px; animation-delay: -1.1s; }
+.cosmos-victory-spark.spark-f { top: 48%; right: 10%; font-size: 11px; animation-delay: -.4s; }
+.cosmos-victory-burst { position: absolute; z-index: 5; left: 50%; top: 51%; width: 1px; height: 1px; }
+.cosmos-victory-particle { position: absolute; left: 0; top: 0; color: #fff0d6; font-size: var(--particle-size); line-height: 1; opacity: 0; text-shadow: 0 0 8px #fff, 0 0 18px rgba(218,187,255,.95); animation: victory-particle-flight 1.65s cubic-bezier(.12,.62,.23,1) var(--particle-delay) both; }
+.cosmos-prize-heading { position: relative; z-index: 2; text-align: center; }
+.cosmos-prize-topline { display: block; margin: 0 0 13px; color: rgba(227,210,244,.62); font-size: 8px; letter-spacing: .25em; }
+.cosmos-prize-seal { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 0 auto 11px; color: #f6dfc6; }
+.cosmos-prize-seal i { color: #f3cdd2; font-size: 10px; font-style: normal; text-shadow: 0 0 12px rgba(255,205,221,.8); }
+.cosmos-prize-seal b { padding: 6px 11px; border: 1px solid rgba(236,207,224,.28); border-radius: 99px; background: rgba(255,255,255,.045); font-size: 8px; letter-spacing: .18em; }
+.cosmos-prize-ticket .cosmos-complete-stamp { color: #e6c8df; font-size: 8px; letter-spacing: .24em; text-shadow: 0 0 18px rgba(235,188,224,.48); }
+.cosmos-prize-ticket h3 { margin: 13px 0 13px; color: #fff9f4; font: 500 clamp(34px,5vw,55px)/1.04 var(--serif); letter-spacing: -.045em; text-shadow: 0 7px 34px rgba(210,175,255,.16); }
+.cosmos-prize-ticket h3 em { color: #e8c8e2; font-weight: 500; text-shadow: 0 0 26px rgba(230,187,225,.19); }
+.cosmos-prize-message { max-width: 570px; margin: 0 auto; color: rgba(235,228,245,.84); font: 15px/1.8 var(--serif); }
+.cosmos-prize-divider { display: flex; align-items: center; justify-content: center; gap: 13px; width: min(100%,370px); margin: 19px auto 17px; color: #edcbdc; }
+.cosmos-prize-divider i { width: 65px; height: 1px; background: linear-gradient(90deg, transparent, rgba(227,196,230,.4), transparent); }
+.cosmos-prize-divider span { font-size: 11px; text-shadow: 0 0 13px rgba(255,219,233,.8); }
+.cosmos-prize-ticket .cosmos-ticket-details { gap: 12px; margin: 0 0 19px; }
+.cosmos-prize-ticket .cosmos-ticket-details span { min-height: 66px; border: 1px solid rgba(231,211,239,.14); border-radius: 15px; background: linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025)); text-align: center; }
+.cosmos-prize-ticket .cosmos-ticket-details i { color: #cbb9dc; font-size: 7px; letter-spacing: .2em; }
+.cosmos-prize-ticket .cosmos-ticket-details b { color: #fff1e9; font-size: 16px; }
+.cosmos-prize-ticket .ticket-claim { width: min(100%,430px); min-height: 58px; border: 1px solid rgba(255,245,236,.72); color: #403047; background: linear-gradient(112deg,#fff0dc 0%,#f0d5e4 47%,#d9d1ff 100%); box-shadow: 0 13px 38px rgba(189,157,220,.25), 0 0 0 6px rgba(232,209,244,.055), inset 0 1px 0 rgba(255,255,255,.95); font-size: 13px; transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+.cosmos-prize-ticket .ticket-claim:hover { transform: translateY(-3px); filter: brightness(1.05); box-shadow: 0 19px 48px rgba(189,157,220,.34), 0 0 0 7px rgba(232,209,244,.075), inset 0 1px 0 #fff; }
+.cosmos-prize-ticket .ticket-claim span { color: #a76d89; }
+.cosmos-prize-ticket .ticket-claim.ticket-saved { color: #fff6f4; border-color: rgba(245,218,236,.35); background: linear-gradient(120deg,#92617e,#6b5b91); }
+.cosmos-prize-promise { display: block; margin-top: 15px; color: rgba(209,195,226,.57); font-size: 7px; font-weight: 800; letter-spacing: .19em; }
+.cosmos-prize-footer { margin-top: 17px; color: rgba(201,190,225,.45); font-size: 7px; letter-spacing: .2em; }
+.cosmos-prize-footer b { color: #e9c4d7; }
+@keyframes cosmos-victory-arrive { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(9px); } }
+@keyframes victory-nebula-breathe { from { transform: scale(.88) rotate(-7deg); opacity: .65; } to { transform: scale(1.12) rotate(7deg); opacity: 1; } }
+@keyframes victory-planet-float { 0%,100% { transform: translateY(2px) rotate(-3deg); } 50% { transform: translateY(-7px) rotate(3deg); } }
+@keyframes victory-heart-pulse { 0%,100% { transform: scale(.95); } 50% { transform: scale(1.13); } }
+@keyframes victory-orbit-one { from { rotate: 0deg; } to { rotate: 360deg; } }
+@keyframes victory-orbit-two { from { rotate: 0deg; } to { rotate: -360deg; } }
+@keyframes victory-moon-drift { 0%,100% { transform: translate(0,0) rotate(-8deg); } 50% { transform: translate(8px,-6px) rotate(8deg); } }
+@keyframes victory-sparkle { from { opacity: .38; transform: scale(.72) rotate(-15deg); } to { opacity: 1; transform: scale(1.25) rotate(20deg); } }
+@keyframes victory-particle-flight { 0% { opacity: 0; transform: translate(-50%,-50%) rotate(var(--particle-angle)) translateY(0) scale(.3); } 18% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%,-50%) rotate(var(--particle-angle)) translateY(calc(-1 * var(--particle-distance))) scale(.05); } }
+@media (max-width: 680px) {
+  .cosmos-complete { padding: max(14px,env(safe-area-inset-top)) 12px max(14px,env(safe-area-inset-bottom)); }
+  .cosmos-prize-ticket { width: 100%; max-height: 96svh; padding: 15px 18px 20px; border-radius: 25px; }
+  .cosmos-victory-art { height: clamp(135px,20vh,175px); margin-bottom: 0; }
+  .cosmos-victory-art-label { top: 2px; font-size: 6px; }
+  .cosmos-prize-topline { margin-bottom: 9px; font-size: 7px; }
+  .cosmos-prize-seal { margin-bottom: 8px; }
+  .cosmos-prize-ticket .cosmos-complete-stamp { font-size: 7px; letter-spacing: .16em; }
+  .cosmos-prize-ticket h3 { margin: 10px 0; font-size: clamp(31px,8.4vw,42px); }
+  .cosmos-prize-message { font-size: 13px; line-height: 1.65; }
+  .cosmos-prize-divider { margin: 13px auto 12px; }
+  .cosmos-prize-ticket .cosmos-ticket-details { gap: 7px; margin-bottom: 13px; }
+  .cosmos-prize-ticket .cosmos-ticket-details span { min-height: 58px; padding: 9px 6px; }
+  .cosmos-prize-ticket .cosmos-ticket-details b { font-size: 13px; }
+  .cosmos-prize-ticket .ticket-claim { min-height: 53px; font-size: 12px; }
+  .cosmos-prize-promise { margin-top: 11px; font-size: 6px; letter-spacing: .12em; }
+  .cosmos-prize-footer { margin-top: 12px; font-size: 6px; letter-spacing: .13em; }
+}
+@media (max-height: 730px) {
+  .cosmos-prize-ticket { padding-top: 12px; padding-bottom: 15px; }
+  .cosmos-victory-art { height: 130px; }
+  .cosmos-prize-ticket h3 { margin: 8px 0; }
+  .cosmos-prize-divider { margin-top: 11px; margin-bottom: 10px; }
+  .cosmos-prize-ticket .cosmos-ticket-details { margin-bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cosmos-victory-art::before, .cosmos-victory-planet, .cosmos-victory-planet b,
+  .cosmos-victory-orbit, .cosmos-victory-moon, .cosmos-victory-spark,
+  .cosmos-victory-particle { animation: none !important; }
+}

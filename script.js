@@ -381,6 +381,7 @@ heartLocations.forEach((item) => {
   const progressText = $('#star-progress-text');
   const whisper = $('#cosmos-whisper');
   const completeCard = $('#cosmos-complete');
+  const victoryBurst = $('#cosmos-victory-burst');
   const timer = $('#cosmos-timer');
   const timerFill = $('#cosmos-timer-fill');
   const timerLabel = $('#cosmos-timer-label');
@@ -413,6 +414,7 @@ heartLocations.forEach((item) => {
   let previousFocus = null;
   let isClosing = false;
   let isComplete = false;
+  let victoryBurstCreated = false;
   let order = shuffle(starPositions.map((_, index) => index));
   const stars = [];
 
@@ -555,6 +557,23 @@ heartLocations.forEach((item) => {
     window.setTimeout(() => burst.remove(), 900);
   }
 
+  function createVictoryBurst() {
+    if (!victoryBurst || victoryBurstCreated) return;
+    victoryBurstCreated = true;
+    const fragment = document.createDocumentFragment();
+    for (let index = 0; index < 54; index += 1) {
+      const particle = document.createElement('i');
+      particle.className = 'cosmos-victory-particle';
+      particle.style.setProperty('--particle-angle', `${(index * 137.5) % 360}deg`);
+      particle.style.setProperty('--particle-distance', `${58 + ((index * 29) % 150)}px`);
+      particle.style.setProperty('--particle-delay', `${(index % 9) * 24}ms`);
+      particle.style.setProperty('--particle-size', `${2 + (index % 4)}px`);
+      particle.textContent = index % 4 === 0 ? '✦' : '·';
+      fragment.appendChild(particle);
+    }
+    victoryBurst.appendChild(fragment);
+  }
+
   function catchStar(star, index) {
     if (star !== activeStar || index !== activeStarIndex || star.disabled || star.hidden || isComplete) return;
     if (performance.now() > deadline) {
@@ -590,9 +609,10 @@ heartLocations.forEach((item) => {
       board.classList.add('is-complete');
       whisper.textContent = 'Смотри… семь мгновений сложились в наше созвездие. ♥';
       window.setTimeout(() => {
+        createVictoryBurst();
         if (completeCard) completeCard.hidden = false;
         overlay.classList.add('cosmos-completed');
-      }, 1050);
+      }, 1450);
     } else {
       nextRoundTimeout = window.setTimeout(startRound, 620);
     }
@@ -813,9 +833,9 @@ heartLocations.forEach((item) => {
   const claimTicket = $('#claim-ticket');
   claimTicket?.addEventListener('click', () => {
     burstHearts(28, window.innerWidth / 2, window.innerHeight * .55);
-    claimTicket.innerHTML = 'Билет сохранён. Жду нашей встречи ♡';
+    claimTicket.innerHTML = 'Наше приглашение принято ♥';
     claimTicket.classList.add('ticket-saved');
-    toast('Билет принят. Осталось дождаться нашей встречи. ♥');
+    toast('Тогда это наше маленькое обещание. До скорой встречи ♥');
   });
   reset();
 })();
