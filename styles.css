@@ -233,3 +233,95 @@ h1, h2, h3, p { margin-top: 0; }
   12% { opacity: 1; }
   100% { opacity: 0; transform: translate3d(var(--drift, 0px), -420px, 0) rotate(230deg) scale(1.2); }
 }
+
+/* A warmer, more playful romantic direction */
+:root {
+  --paper: #fff7f3;
+  --paper-deep: #f6e7e2;
+  --ink: #38272d;
+  --muted: #876e72;
+  --olive: #9a5965;
+  --olive-dark: #503640;
+  --clay: #d36f7d;
+  --rose: #efb8bb;
+}
+body { background: var(--paper); color: var(--ink); }
+::selection { background: #f2c7ca; color: #38272d; }
+.site-header { border-bottom-color: rgba(85,48,59,.12); background: rgba(255,247,243,.87); backdrop-filter: blur(14px); }
+.wordmark { letter-spacing: .16em; color: #65434c; }
+.wordmark-mark { color: #d36f7d; font-size: 17px; animation: tiny-heartbeat 1.9s ease-in-out infinite; }
+.nav a, .header-note { color: #866a70; }
+.nav a:hover, .header-note:hover { color: #c65e70; }
+.hero { background: radial-gradient(ellipse at 83% 28%, rgba(246,210,207,.42), transparent 38%); }
+.hero h1 { color: #3e2b33; }
+.hero h1 em, h2 em { color: #c95f72; }
+.hero-text { color: #806a70; }
+.button-dark { background: #593b47; color: #fff7f3; border-radius: 3px 17px 3px 17px; }
+.button-dark:hover { background: #754c5a; }
+.hero-art { border-radius: 3px 72px 3px 72px; background: #e8c5bd; box-shadow: 0 25px 70px rgba(123,72,77,.16); }
+.hero-art::before { background: linear-gradient(150deg, #f2d9cc 0%, #e9b9b1 48%, #bb7c7c 100%); }
+.sun { background: #ffe6cf; box-shadow: 0 0 85px rgba(255,237,211,.55); }
+.hill-back { background: #bd8d87; }
+.hill-front { background: #865c68; }
+.orbit { border-color: rgba(255,247,243,.55); }
+.art-flower { color: rgba(255,247,243,.87); }
+.art-caption { color: #fff6ef; }
+.art-bottomline span:last-child { color: #fff3ed; }
+.intro-section { background: #fff7f3; }
+.intro-body p { color: #806e70; }
+.quality-card { border-color: rgba(91,54,66,.13); border-radius: 3px 22px 3px 22px; background: rgba(255,255,255,.42); }
+.quality-card-accent { background: #f8e8e4; }
+.quality-symbol { color: #d36f7d; }
+.quality-card p { color: #806e70; }
+.letter-section { background: #503640; }
+.letter-section::before { border-color: rgba(255,235,230,.12); box-shadow: 0 0 0 46px rgba(0,0,0,0), 0 0 0 47px rgba(255,235,230,.07), 0 0 0 100px rgba(0,0,0,0), 0 0 0 101px rgba(255,235,230,.045); }
+.letter-heading h2 em { color: #f0b7b6; }
+.letter-card { border-radius: 3px 24px 3px 24px; background: #fff6f0; box-shadow: 0 28px 75px rgba(22,9,14,.25); }
+.letter-card-top span:last-child, .hand-heart, .dialog-heart { color: #d36f7d; }
+.note-card { border-radius: 4px 26px 4px 26px; }
+.note-peach { background: #f4d9d0; }
+.note-green { background: #e5e5d9; }
+.note-lilac { background: #ece0e8; }
+.note-illustration { color: rgba(255,250,247,.76); text-shadow: 0 5px 20px rgba(139,73,87,.08); }
+.note-spark { color: rgba(204,100,119,.24); }
+.note-flower { color: rgba(197,103,127,.30); }
+.ending-section { background: linear-gradient(135deg, #ae6471 0%, #9f5969 48%, #7d4b60 100%); }
+.ending-section::before { border-color: rgba(255,245,241,.2); }
+.ending-orb { background: #efb7ae; opacity: .48; }
+.ending-content h2 em { color: #ffe0d4; }
+.button-light { border-radius: 3px 17px 3px 17px; }
+.site-footer { background: #fff7f3; color: #8a7075; }
+.site-footer .wordmark { color: #65434c; }
+.note-dialog { border-radius: 4px 28px 4px 28px; background: #fff7f2; }
+.note-dialog::backdrop { background: rgba(50,28,37,.66); }
+
+/* Little hearts are part of the experience, not just decoration. */
+.heart-button { min-height: 48px; display: inline-flex; align-items: center; gap: 9px; padding: 0 13px; border: 1px solid rgba(196,97,117,.27); border-radius: 999px; background: rgba(255,255,255,.6); color: #81515e; cursor: pointer; font-size: 10px; font-weight: 700; letter-spacing: .035em; transition: transform .2s ease, background .2s ease, box-shadow .2s ease; }
+.heart-button:hover { transform: translateY(-3px); background: #fff; box-shadow: 0 10px 24px rgba(172,87,104,.13); }
+.heart-button > span { color: #d36f7d; font-size: 18px; animation: tiny-heartbeat 1.5s ease-in-out infinite; }
+.heart-button small { min-width: 21px; height: 21px; display: inline-grid; place-items: center; padding: 0 5px; border-radius: 999px; background: #f8e2df; color: #a54e61; font-size: 9px; }
+.hero-heart { position: absolute; z-index: 4; color: #fff4ed; line-height: 1; text-shadow: 0 8px 25px rgba(129,63,77,.16); }
+.hero-heart-main { top: 31%; left: 42%; font-size: clamp(70px, 10vw, 112px); transform: rotate(-12deg); animation: heart-float 4.5s ease-in-out infinite; }
+.hero-heart-small { font-size: 27px; color: #f9e8dc; opacity: .9; }
+.hero-heart-one { top: 25%; right: 18%; animation: heart-float 4s ease-in-out infinite reverse; }
+.hero-heart-two { left: 22%; top: 61%; font-size: 19px; animation: heart-float 5.2s ease-in-out infinite; }
+.art-caption { bottom: 62px; }
+.floating-heart { position: fixed; z-index: 50; left: var(--start-x); top: var(--start-y); color: #d96d80; font-size: var(--heart-size, 22px); line-height: 1; pointer-events: none; text-shadow: 0 4px 15px rgba(125,51,68,.18); animation: heart-rise var(--heart-duration, 2.5s) ease-out forwards; }
+.floating-petal { color: rgba(255,235,230,.96); }
+.dialog-heart { animation: tiny-heartbeat 1.5s ease-in-out infinite; }
+@keyframes tiny-heartbeat { 0%, 100% { transform: scale(1); } 12% { transform: scale(1.13); } 24% { transform: scale(1); } 36% { transform: scale(1.08); } 48% { transform: scale(1); } }
+@keyframes heart-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -13px; } }
+@keyframes heart-rise { 0% { opacity: 0; transform: translate(-50%, 0) rotate(-12deg) scale(.65); } 12% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(-50% + var(--heart-drift, 0px)), -175px) rotate(20deg) scale(1.15); } }
+@media (max-width: 600px) {
+  .site-header { background: rgba(255,247,243,.94); }
+  .hero { background: radial-gradient(ellipse at 85% 58%, rgba(246,210,207,.30), transparent 46%); }
+  .hero h1 { font-size: clamp(53px, 14vw, 70px); }
+  .hero-actions { align-items: flex-start; }
+  .heart-button { min-height: 45px; }
+  .hero-art { border-radius: 3px 50px 3px 50px; }
+  .hero-heart-main { font-size: 88px; }
+  .letter-card { transform: rotate(.4deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wordmark-mark, .heart-button > span, .hero-heart, .dialog-heart { animation: none !important; }
+}

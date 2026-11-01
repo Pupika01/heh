@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f0e8">
-  <meta name="description" content="Небольшая страница, сделанная с теплом и любовью.">
-  <title>Немного тепла — для тебя</title>
+  <meta name="theme-color" content="#fff5f3">
+  <meta name="description" content="Маленький сюрприз, в котором много любви.">
+  <title>Для тебя ♡</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
 <body>
   <div class="grain" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="wordmark" href="#top" aria-label="На главную"><span class="wordmark-mark">✳</span> ТИХО И ВАЖНО</a>
+    <a class="wordmark" href="#top" aria-label="На главную"><span class="wordmark-mark">♥</span> ДЛЯ ТЕБЯ</a>
     <nav class="nav" aria-label="Основная навигация">
       <a href="#about">О главном</a>
       <a href="#notes">На любой день</a>
@@ -29,25 +29,28 @@
   <main id="top">
     <section class="hero section-shell">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-line"></span> НЕ НУЖЕН ОСОБЫЙ ПОВОД</p>
-        <h1>Есть люди,<br>рядом с которыми<br><em>мир добрее.</em></h1>
-        <p class="hero-text">Я сделал эту маленькую страницу, чтобы напомнить тебе кое-что важное. Не между делом, не на бегу — а по-настоящему.</p>
+        <p class="eyebrow"><span class="eyebrow-line"></span> МАЛЕНЬКИЙ СЮРПРИЗ ДЛЯ ТЕБЯ</p>
+        <h1>Я бы снова<br>выбрал <em>тебя.</em></h1>
+        <p class="hero-text">Не потому что нужен повод. Просто мне захотелось напомнить, как много ты для меня значишь. И сделать для тебя кое-что особенное.</p>
         <div class="hero-actions">
           <a class="button button-dark" href="#letter">Прочитать письмо <span>↗</span></a>
-          <span class="micro-note">несколько слов от сердца</span>
+          <button class="heart-button" id="heart-button" type="button"><span aria-hidden="true">♥</span> Отправить сердечко <small id="heart-count" aria-live="polite">0</small></button>
         </div>
       </div>
 
       <div class="hero-art" aria-label="Декоративная иллюстрация: солнце над холмами" role="img">
         <div class="art-topline"><span>№ 001</span><span>СОЗДАНО С ТЕПЛОМ</span></div>
         <div class="sun"></div>
+        <span class="hero-heart hero-heart-main" aria-hidden="true">♥</span>
+        <span class="hero-heart hero-heart-small hero-heart-one" aria-hidden="true">♥</span>
+        <span class="hero-heart hero-heart-small hero-heart-two" aria-hidden="true">♥</span>
         <div class="orbit orbit-one"></div>
         <div class="orbit orbit-two"></div>
         <div class="hill hill-back"></div>
         <div class="hill hill-front"></div>
         <div class="art-flower flower-one">✳</div>
         <div class="art-flower flower-two">✳</div>
-        <div class="art-caption"><span>для самого</span><strong>дорогого человека</strong></div>
+        <div class="art-caption"><span>для самого</span><strong>моего любимого человека</strong></div>
         <div class="art-bottomline"><span>СОХРАНИ ЭТО ЧУВСТВО</span><span>♡</span></div>
       </div>
       <div class="hero-index" aria-hidden="true">01 / 04</div>
@@ -57,9 +60,9 @@
     <section class="intro-section section-shell" id="about">
       <div class="section-kicker"><span>01</span><span class="kicker-rule"></span><span>САМОЕ ГЛАВНОЕ</span></div>
       <div class="intro-grid">
-        <h2>Мне нравится<br>не только то,<br><em>какая ты.</em></h2>
+        <h2>Ты делаешь<br>обычное<br><em>особенным.</em></h2>
         <div class="intro-body">
-          <p class="intro-lead">Мне нравится то, каким становится мир, когда ты в нём есть.</p>
+          <p class="intro-lead">С тобой даже самые обычные моменты становятся моими любимыми.</p>
           <p>Обычные вещи вдруг становятся чуть интереснее. В случайных моментах появляется что-то особенное. И даже самый простой день может стать тем самым днём, который хочется запомнить.</p>
           <p>Я не всегда умею красиво всё объяснить, поэтому пусть часть моих слов останется здесь.</p>
           <div class="signature"><span class="signature-line"></span><span>от меня — тебе</span></div>
@@ -68,19 +71,19 @@
       <div class="qualities">
         <article class="quality-card">
           <span class="quality-number">01</span>
-          <span class="quality-symbol">☼</span>
+          <span class="quality-symbol">♥</span>
           <h3>Твоя улыбка</h3>
           <p>У неё есть талант делать хороший момент ещё лучше.</p>
         </article>
         <article class="quality-card quality-card-accent">
           <span class="quality-number">02</span>
-          <span class="quality-symbol">⌁</span>
+          <span class="quality-symbol">♡</span>
           <h3>Твоя искренность</h3>
           <p>Мне ценно, что рядом с тобой хочется быть собой.</p>
         </article>
         <article class="quality-card">
           <span class="quality-number">03</span>
-          <span class="quality-symbol">✳</span>
+          <span class="quality-symbol">♥</span>
           <h3>Твой целый мир</h3>
           <p>Мне интересно узнавать его — бережно, день за днём.</p>
         </article>
@@ -99,10 +102,10 @@
           <article class="letter-card">
             <div class="letter-card-top"><span>ЛИЧНОЕ</span><span>♡</span></div>
             <div class="letter-card-body">
-              <p class="letter-greeting">Привет, хорошая.</p>
-              <p>Я хочу, чтобы ты чаще замечала, сколько в тебе прекрасного. Не только в те дни, когда всё получается, настроение отличное и ты довольна собой. А вообще. Каждый день.</p>
-              <p>Мне хочется быть человеком, с которым тебе спокойно, смешно и легко. Который умеет слушать, замечать мелочи, поддерживать и радовать тебя без повода.</p>
-              <p>Я не обещаю идеальности. Но обещаю стараться — не только говорить красивые слова, но и подтверждать их поступками.</p>
+              <p class="letter-greeting">Привет, моя хорошая.</p>
+              <p>Я хочу, чтобы ты помнила, как много в тебе прекрасного. Не только в дни, когда всё получается и настроение отличное. А вообще — каждый день.</p>
+              <p>Мне хочется быть человеком, рядом с которым тебе спокойно, смешно и легко. Замечать мелочи, слушать тебя, поддерживать и радовать — не только по праздникам.</p>
+              <p>Я не обещаю быть идеальным. Но обещаю стараться, слышать тебя и подтверждать красивые слова поступками.</p>
               <p class="letter-signoff">Ты очень много для меня значишь.<br><span>И это не просто красивые слова.</span></p>
             </div>
             <div class="letter-card-bottom"><span>С ТЕПЛОМ</span><span class="hand-heart">♡</span></div>
@@ -121,19 +124,19 @@
       <div class="note-grid">
         <button class="note-card note-peach" type="button" data-note="sad">
           <span class="note-top"><span>ЗАПИСКА № 01</span><span>↗</span></span>
-          <span class="note-illustration note-cloud" aria-hidden="true">☁</span>
+          <span class="note-illustration note-cloud" aria-hidden="true">♡</span>
           <span class="note-title">Когда день<br>не задался</span>
           <span class="note-bottom">ОТКРЫТЬ ЗАПИСКУ <span>↗</span></span>
         </button>
         <button class="note-card note-green" type="button" data-note="doubt">
           <span class="note-top"><span>ЗАПИСКА № 02</span><span>↗</span></span>
-          <span class="note-illustration note-spark" aria-hidden="true">✳</span>
+          <span class="note-illustration note-spark" aria-hidden="true">♥</span>
           <span class="note-title">Когда забываешь,<br>какая ты классная</span>
           <span class="note-bottom">ОТКРЫТЬ ЗАПИСКУ <span>↗</span></span>
         </button>
         <button class="note-card note-lilac" type="button" data-note="smile">
           <span class="note-top"><span>ЗАПИСКА № 03</span><span>↗</span></span>
-          <span class="note-illustration note-flower" aria-hidden="true">✿</span>
+          <span class="note-illustration note-flower" aria-hidden="true">♡</span>
           <span class="note-title">Когда хочется<br>улыбнуться</span>
           <span class="note-bottom">ОТКРЫТЬ ЗАПИСКУ <span>↗</span></span>
         </button>
@@ -145,9 +148,9 @@
       <div class="ending-content section-shell">
         <div class="section-kicker section-kicker-light"><span>04</span><span class="kicker-rule"></span><span>И ПОСЛЕДНЕЕ</span></div>
         <p class="eyebrow eyebrow-light">ЭТОТ САЙТ — ЛИШЬ МАЛЕНЬКОЕ НАПОМИНАНИЕ</p>
-        <h2>Самое красивое<br>я хочу показывать<br><em>не экраном.</em></h2>
-        <p class="ending-copy">А вниманием, заботой, временем и маленькими поступками. Сегодня, завтра и в самые обычные дни.</p>
-        <button class="button button-light" id="surprise-button" type="button">Нажми напоследок <span>♡</span></button>
+        <h2>Моё любимое<br>место — там,<br><em>где ты.</em></h2>
+        <p class="ending-copy">И я хочу доказывать это не только словами, но и вниманием, заботой и маленькими поступками — каждый день.</p>
+        <button class="button button-light" id="surprise-button" type="button">Забрать порцию любви <span>♥</span></button>
         <p class="ending-footnote" id="ending-footnote" aria-live="polite">Здесь спрятано кое-что хорошее.</p>
       </div>
       <div class="ending-stamp" aria-hidden="true"><span>СДЕЛАНО</span><strong>♡</strong><span>С ЛЮБОВЬЮ</span></div>
@@ -155,8 +158,8 @@
   </main>
 
   <footer class="site-footer">
-    <a class="wordmark" href="#top"><span class="wordmark-mark">✳</span> ТИХО И ВАЖНО</a>
-    <span>маленькая страница с большим чувством</span>
+    <a class="wordmark" href="#top"><span class="wordmark-mark">♥</span> ДЛЯ ТЕБЯ</a>
+    <span>сделано с любовью и только для тебя ♡</span>
     <a href="#top" class="to-top">НАВЕРХ ↑</a>
   </footer>
 

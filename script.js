@@ -89,3 +89,35 @@ surpriseButton.addEventListener('click', () => {
   }
   for (let i = 0; i < 18; i += 1) window.setTimeout(makePetal, i * 65);
 });
+
+// A tiny interactive heart button: every tap sends a little burst of hearts.
+const heartButton = document.querySelector('#heart-button');
+const heartCount = document.querySelector('#heart-count');
+let heartsSent = 0;
+
+function sendFloatingHeart(x, y, delay = 0) {
+  window.setTimeout(() => {
+    const heart = document.createElement('span');
+    heart.className = 'floating-heart';
+    heart.textContent = Math.random() > 0.23 ? '♥' : '♡';
+    heart.style.setProperty('--start-x', `${x + Math.round(Math.random() * 36 - 18)}px`);
+    heart.style.setProperty('--start-y', `${y + Math.round(Math.random() * 16 - 8)}px`);
+    heart.style.setProperty('--heart-size', `${15 + Math.round(Math.random() * 17)}px`);
+    heart.style.setProperty('--heart-drift', `${Math.round(Math.random() * 100 - 50)}px`);
+    heart.style.setProperty('--heart-duration', `${2 + Math.random() * 1.2}s`);
+    document.body.appendChild(heart);
+    window.setTimeout(() => heart.remove(), 3500);
+  }, delay);
+}
+
+if (heartButton && heartCount) {
+  heartButton.addEventListener('click', () => {
+    heartsSent += 1;
+    heartCount.textContent = String(heartsSent);
+    const rect = heartButton.getBoundingClientRect();
+    for (let i = 0; i < 9; i += 1) {
+      sendFloatingHeart(rect.left + rect.width * 0.48, rect.top + rect.height * 0.5, i * 55);
+    }
+    heartButton.setAttribute('aria-label', `Отправлено сердечек: ${heartsSent}`);
+  });
+}
